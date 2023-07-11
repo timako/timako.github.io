@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="符号表         符号 域 描述     \(y\) \(\mathbb{R}^3\) 光顶点   \(z\) \(\mathbb{R}^3\) 眼顶点   \(P(y,z)\) \([0,1]\) 俄罗斯轮盘的概率   \(n\) \(S^2\) 表面法线   \(\omega\) \(S^2\) 散射波瓣上的一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HRRVC paper reading">
+<meta property="og:url" content="http://example.com/2023/07/11/HRRVC-paper-reading/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="符号表         符号 域 描述     \(y\) \(\mathbb{R}^3\) 光顶点   \(z\) \(\mathbb{R}^3\) 眼顶点   \(P(y,z)\) \([0,1]\) 俄罗斯轮盘的概率   \(n\) \(S^2\) 表面法线   \(\omega\) \(S^2\) 散射波瓣上的一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pic/1.png">
+<meta property="og:image" content="http://example.com/pic/2.png">
+<meta property="og:image" content="http://example.com/pic/3.png">
+<meta property="article:published_time" content="2023-07-11T08:18:08.000Z">
+<meta property="article:modified_time" content="2023-07-11T09:00:55.940Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pic/1.png">
+
+<link rel="canonical" href="http://example.com/2023/07/11/HRRVC-paper-reading/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HRRVC paper reading | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/11/HRRVC-paper-reading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HRRVC paper reading
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-11 16:18:08 / 修改时间：17:00:55" itemprop="dateCreated datePublished" datetime="2023-07-11T16:18:08+08:00">2023-07-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="符号表">符号表</h2>
+<table>
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 20%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>域</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y\)</span></td>
+<td><span class="math inline">\(\mathbb{R}^3\)</span></td>
+<td>光顶点</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(z\)</span></td>
+<td><span class="math inline">\(\mathbb{R}^3\)</span></td>
+<td>眼顶点</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(P(y,z)\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td>俄罗斯轮盘的概率</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(n\)</span></td>
+<td><span class="math inline">\(S^2\)</span></td>
+<td>表面法线</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\omega\)</span></td>
+<td><span class="math inline">\(S^2\)</span></td>
+<td>散射波瓣上的一个方向</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\omega &#39;\)</span></td>
+<td><span class="math inline">\(S^2\)</span></td>
+<td>入射方向</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\rho(z, \omega,
+\omega&#39;)\)</span></td>
+<td><span class="math inline">\([0,\infty]\)</span></td>
+<td>z处的BRDF</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(q_z(\omega)\)</span></td>
+<td><span class="math inline">\([0,\infty]\)</span></td>
+<td>z处的近似散射波瓣</td>
+</tr>
+<tr class="odd">
+<td>$_i $</td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td>第i个均匀随机数</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(R(\omega;z,\xi_i)\)</span></td>
+<td><span class="math inline">\([0,\infty]\)</span></td>
+<td>z处的光顶点接受范围</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(D(·)\)</span></td>
+<td><span class="math inline">\([0,\infty]\)</span></td>
+<td>GGX分布</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(K(·)\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td>平方椭球波瓣(SEL)函数</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\alpha_x, \alpha_y\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td>GGX的粗糙度</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat{\alpha}_x,
+\hat{\alpha}_y\)</span></td>
+<td><span class="math inline">\([0,1]\)</span></td>
+<td>GGX的粗糙度</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(M\)</span></td>
+<td><span class="math inline">\(\mathbb{N}\)</span></td>
+<td>光路径数量</td>
+</tr>
+</tbody>
+</table>
+<h2 id="层次化的俄罗斯轮盘赌">层次化的俄罗斯轮盘赌</h2>
+<h3 id="随机散射范围">随机散射范围</h3>
+<p>对于光顶点y和眼顶点z的连接，俄罗斯轮盘赌的接受概率： <span
+class="math display">\[
+P(\mathbf{y},\mathbf{z})=\min\left(\frac{Cq_z\left(\overrightarrow{\mathbf{zy}}\right)}{\|\mathbf{y}-\mathbf{z}\|^2},1\right)
+\]</span> 其中，<span class="math inline">\(C \in [0,\infty)\)</span>
+是一个用户指定的参数，可用来控制方差和性能之间的权衡。球函数<span
+class="math inline">\(q_z\)</span>约等于散射波瓣： <span
+class="math display">\[
+\operatorname{q}_{\mathrm{z}}\left(\omega\right)\approx\operatorname{p}\left(\mathrm{z},\omega&#39;,\omega\right)\left|\omega\cdot\mathrm{n}\right|
+\]</span> 令 ξi 为第 i 个均匀随机数，则从 z
+开始的世界空间接受范围的边界是一个球函数，由满足 P(y, z) = ξi 的距离 ∥y
+− z∥ 给出(只有在这个范围内的光顶点才会和眼顶点z连接)。</p>
+<p>wyd: 注意P(y, z) = ξi
+表示俄罗斯轮盘赌的接受概率，该随机数越小，说明越不可能接受俄罗斯轮盘赌，也就是说这个节点内的光顶点越不可忽略，所以此处的世界空间接受范围的边界越大
+<span class="math display">\[
+R(\omega;z,\xi_i)=\sqrt{\frac{Cq_z(\omega)}{\xi_i}}.
+\]</span></p>
+<h3 id="层次化拒绝">层次化拒绝</h3>
+<p>为了快速地在散射范围<span
+class="math inline">\(\operatorname{R}(\omega;z,\xi_i)\)</span>中寻找光顶点，我们构建了一个光顶点的二分层级包围体(BVH)。使用这个BVH，散射范围和光顶点的包围盒之间的相交测试就可以使用一种自上而下的分层方式进行。然而，尽管散射范围的形状只依赖于近似波瓣<span
+class="math inline">\(q_z(\omega)\)</span>,
+但是散射范围的大小却依赖于随机变量<span
+class="math inline">\(\sqrt{C/\xi_i}\)</span>
+。如果按照论文中的说法来说，俄罗斯轮盘赌的接受概率和光顶点和眼顶点都有关，因此要对每一个光顶点生成这样的随机数，这显然是不可接受的。因此对于每个BVH节点执行相交测试，我们需要得到<span
+class="math inline">\(\sqrt{\operatorname{C}/\min_{i\in\mathrm{L}}\xi_i}\)</span>以确定散射范围，其中其中<span
+class="math inline">\(L\)</span>表示该节点包含的叶子节点的索引集。所以对于每一个BVH，我们使用自上而下生成这个随机数的方法</p>
+<h4 id="预生成随机数的问题">预生成随机数的问题</h4>
+<p>一种低效的获取每一个节点中最小的随机数的方法就是以自下而上的方式进行预计算。首先，在预处理步骤中将单个随机数分配给每个光顶点，其方法类似于随机光剔除方法。然后，在构建BVH的阶段，将最小随机数从叶子节点传播到更上层的节点。然而，因为对于所有的眼睛顶点都是使用相同的预计算的随机数，这种方法就会在眼睛顶点间产生相关性方差。如果眼睛顶点被密集采样(例如超采样)的话，这种相关性方差会影响计算效率，并且在后处理去噪过程中(例如图片去噪)也会极大地降低效率。为了避免相关性方差，就必须为每一对光顶点和眼睛顶点赋予不同的随机数。但是，在每一个眼睛顶点处都进行一次完全自下而上传播的代价明显是非常昂贵的。我们提出了一个实时生成最小随机数的方法，该方法是自上而下的方式并且不会对所有光顶点生成随机数，自然也就不需要自下而上地传播随机数了。</p>
+<h3 id="即时最小随机数生成">即时最小随机数生成</h3>
+<p>我们首先讨论 O(1) 方法来生成均匀随机数中的最小值。
+然后，我们将讨论扩展到自上而下的分层算法，为每个 BVH
+节点生成最小随机数。为了提高该算法的数值稳定性，我们使用半分层抽样方法，该方法使用重叠层生成均匀且部分分层的随机数。</p>
+<h4 id="最小随机数的-pdf">最小随机数的 PDF</h4>
+<p>N 个均匀随机数中的最小值 {ξ1, . . . , ξN } 可以通过考虑其 PDF
+生成。这个PDF为： <span class="math display">\[
+P_{\min,N}(u)=N(1-u)^{N-1}
+\]</span>
+这个公式的含义是对于N个0~1的随机数，他们最小值为u的概率。又因为这个PDF的累积分布函数的逆函数也有一个封闭形式的解，所以说只要生成一个均匀的随机数，就能随机地生成一个N个随机数中的最小随机数
+<span class="math display">\[
+\min\{\xi_1,\dots,\xi_N\}=1-(1-\xi)^{\frac{1}{N}}.
+\]</span> 尽管基于以上公式，我们可以使用一种实时的随机数生成方法，但当N
+NN很大时会有精度问题(如图4b所示)。然而，对于1维分层采样的情况(因为是对随机数的边界进行分层，所以这里是1维)，我们可以避免数值误差并简化公式。由于分层随机数的最小值总是在最低层内，因此，可以简化为：
+<span class="math display">\[
+\min\{\xi_1,\dots,\xi_N\}=\frac{\xi}{N}.
+\]</span> 而这个最小值的pdf为 <span
+class="math inline">\(P_{\min,N}(u)=N\)</span> ,对于 <span
+class="math inline">\(u\in[0,1/\mathrm{N}]\)</span>, 否则<span
+class="math inline">\({p_{min,N}}\left(u\right)=0\)</span></p>
+<h4 id="层次化生成bvh中的随机数">层次化生成bvh中的随机数</h4>
+<p><img src="/pic/1.png" /></p>
+<p>对于我们的BVH来说，父节点的最小随机数一定等于子节点最小随机数中的最小值。因此，在自上而下的分层生成过程中，父节点的最小随机数就会传播给一个子节点(蓝色节点)。然后，对于另一个节点(橙色节点)，就需要生成一个比其父节点值大的新的最小随机数。继承父节点最小随机数值的子节点是根据子节点中包含的叶子节点数量来随机选择的。这是因为如果所有叶子节点中的随机数是均匀分布的话，那么子树中出现最小值的概率与叶子节点数量成正比。因此，子节点被选中的概率为：
+<span class="math display">\[
+\mathrm P_{selection}(\mathrm j)=\frac{|\mathrm L_\mathrm j|}{|\mathrm
+L_\mathrm j|+|\mathrm L_{\mathrm j&#39;}|}
+\]</span> 轮盘赌自上而下传播的实际上是一个上确界b。参考下图算法：</p>
+<p><img src="/pic/2.png" /></p>
+<p>b是父节点的概率上确界，随后，向选中的l节点中传递这个概率上确界，同时计算一个属于[b,
+1]的兄弟结点的概率上确界b'，传递给另一个未被选中的兄弟节点，而新的最小随机数只需要生成一个单一的均匀随机数就可获得，公式如下：
+<span class="math display">\[
+\min\limits_{\mathrm{i}\in\mathrm{L}}\xi_\mathrm{i}=\mathrm{b}+(1-\mathrm{b})\frac{\xi}{|\mathrm{L}|}
+\]</span></p>
+<h3 id="接受概率的各向异性波瓣近似">接受概率的各向异性波瓣近似</h3>
+<h4 id="ggx分布">GGX分布</h4>
+<p>SEL函数基于GGX分布</p>
+<h4 id="平方球波瓣ssl">平方球波瓣(SSL)</h4>
+<p>对于微平面BRDF，可用半角近似各项同性GGX分布的散射波瓣：</p>
+<h4 id="平方椭球波瓣sel">平方椭球波瓣(SEL)</h4>
+<p>各向同性的球函数，不能表示这种各向异性的散射效果。因此，我们将平方球波瓣推导到了平方椭球波瓣(SEL)</p>
+<p><img src="/pic/3.png" /></p>
+<h4 id="ggx的近似">GGX的近似</h4>
+<p>尽管GGX是一个半球分布，但SEL是一个椭球函数。然而，对于低粗糙度的情况，可以使用下面的公式来近似
+<span class="math display">\[
+\pi\alpha_x\alpha_y
+D\left(\omega;\mathbb{Q},\alpha_x,\alpha_y\right)\approx
+K\left(\omega;\mathbb{Q},\frac{\alpha_x}{2},\frac{\alpha_y}{2}\right)
+\]</span></p>
+<h4 id="各向异性散射波瓣的近似">各向异性散射波瓣的近似</h4>
+<p>对于使用了多重重要性采样(MIS)的双向路径跟踪(BPT)，只有在散射波瓣峰值的附近(即BRDF和cos的乘积)，PDF的近似准确率才是重要的。因此，我们在近似的峰值方向$
+_z$ 使用原始的波瓣值来作为SEL的系数： <span class="math display">\[
+q_z(\omega)=cK(\omega;Q,\dot{\alpha}_x,\dot{\alpha}_y)
+\]</span> 其中<span
+class="math inline">\(\text{c}=\rho\left(\text{z},\omega&#39;,\omega_\text{z}\right)\left|\omega_\text{z}\cdot\text{n}\right|\)</span>是有关BRDF的系数</p>
+<h3 id="结合进双向路径追踪">结合进双向路径追踪</h3>
+<p>本文结合了我们基于俄罗斯轮盘赌的分层连接和概率连接[Popov et al。
+2015]（或常规顶点连接）通过使用多重重要性采样（MIS）。这是因为我们的连接对于镜面漫反射
+(SDG) 或光泽-漫反射-光泽 (GDG)
+路径是有效的，而概率连接对于低频照明效果是有效的。概率连接使用概率质量函数
+(PMF)
+从缓存中为给定的眼睛顶点采样重要的灯光顶点，该函数考虑了灯光和眼睛顶点的可见性、几何项和
+BRDF。然而，概率连接必须将重用光子路径的数量限制在一个较小的数量（例如
+100），因为它的计算开销和内存需求与重用子路径计数和 PMF
+记录数的乘积成正比。对于极其光滑的表面，使用数百个样本仍然不够。虽然我们的方法的接受概率忽略了光顶点处的可见性和
+BRDF，但重用数百万光子路径减轻了概率连接以及常规顶点连接的限制。</p>
+<h4 id="多重重要性抽样">多重重要性抽样</h4>
+<p>为了使用强大的 MIS 策略，例如平衡启发算法，必须获得每种技术的 [
+样本计数和 PDF ] 的乘积。 M
+光子路径的简单俄罗斯轮盘赌简单地给出了这个采样密度： <span
+class="math display">\[
+d_t(\bar{\mathbf{x}})=MP(\mathbf{y}_{s-1},\mathbf{z}_{t-1})p_t(\bar{\mathbf{x}}),
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/11/VAE-paper-reading/" rel="prev" title="VAE paper reading">
+      <i class="fa fa-chevron-left"></i> VAE paper reading
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="nav-number">1.</span> <span class="nav-text">符号表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E7%9A%84%E4%BF%84%E7%BD%97%E6%96%AF%E8%BD%AE%E7%9B%98%E8%B5%8C"><span class="nav-number">2.</span> <span class="nav-text">层次化的俄罗斯轮盘赌</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%A3%E5%B0%84%E8%8C%83%E5%9B%B4"><span class="nav-number">2.1.</span> <span class="nav-text">随机散射范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E6%8B%92%E7%BB%9D"><span class="nav-number">2.2.</span> <span class="nav-text">层次化拒绝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%84%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.1.</span> <span class="nav-text">预生成随机数的问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B3%E6%97%B6%E6%9C%80%E5%B0%8F%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90"><span class="nav-number">2.3.</span> <span class="nav-text">即时最小随机数生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%9A%84-pdf"><span class="nav-number">2.3.1.</span> <span class="nav-text">最小随机数的 PDF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E7%94%9F%E6%88%90bvh%E4%B8%AD%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B0"><span class="nav-number">2.3.2.</span> <span class="nav-text">层次化生成bvh中的随机数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E6%A6%82%E7%8E%87%E7%9A%84%E5%90%84%E5%90%91%E5%BC%82%E6%80%A7%E6%B3%A2%E7%93%A3%E8%BF%91%E4%BC%BC"><span class="nav-number">2.4.</span> <span class="nav-text">接受概率的各向异性波瓣近似</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ggx%E5%88%86%E5%B8%83"><span class="nav-number">2.4.1.</span> <span class="nav-text">GGX分布</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E6%96%B9%E7%90%83%E6%B3%A2%E7%93%A3ssl"><span class="nav-number">2.4.2.</span> <span class="nav-text">平方球波瓣(SSL)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E6%96%B9%E6%A4%AD%E7%90%83%E6%B3%A2%E7%93%A3sel"><span class="nav-number">2.4.3.</span> <span class="nav-text">平方椭球波瓣(SEL)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ggx%E7%9A%84%E8%BF%91%E4%BC%BC"><span class="nav-number">2.4.4.</span> <span class="nav-text">GGX的近似</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%84%E5%90%91%E5%BC%82%E6%80%A7%E6%95%A3%E5%B0%84%E6%B3%A2%E7%93%A3%E7%9A%84%E8%BF%91%E4%BC%BC"><span class="nav-number">2.4.5.</span> <span class="nav-text">各向异性散射波瓣的近似</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E5%90%88%E8%BF%9B%E5%8F%8C%E5%90%91%E8%B7%AF%E5%BE%84%E8%BF%BD%E8%B8%AA"><span class="nav-number">2.5.</span> <span class="nav-text">结合进双向路径追踪</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E9%87%8D%E9%87%8D%E8%A6%81%E6%80%A7%E6%8A%BD%E6%A0%B7"><span class="nav-number">2.5.1.</span> <span class="nav-text">多重重要性抽样</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
