@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="生成对抗网络 (Generative Adversarial Network, GAN) 是一类神经网络，通过轮流训练判别器 (Discriminator) 和生成器 (Generator)，令其相互对抗，来从复杂概率分布中采样，例如生成图片、文字、语音等。今天我们开始阅读并且实现最简单的GAN网络。 熵 熵的公式如下： \[ Entropy&#x3D;-\sum_i P(i)\log_2P(i)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAN reading and implementation">
+<meta property="og:url" content="http://example.com/2023/07/13/GAN-reading-and-implementation/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="生成对抗网络 (Generative Adversarial Network, GAN) 是一类神经网络，通过轮流训练判别器 (Discriminator) 和生成器 (Generator)，令其相互对抗，来从复杂概率分布中采样，例如生成图片、文字、语音等。今天我们开始阅读并且实现最简单的GAN网络。 熵 熵的公式如下： \[ Entropy&#x3D;-\sum_i P(i)\log_2P(i)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-13T05:25:47.000Z">
+<meta property="article:modified_time" content="2023-07-13T10:37:32.612Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/07/13/GAN-reading-and-implementation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GAN reading and implementation | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/13/GAN-reading-and-implementation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GAN reading and implementation
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-13 13:25:47 / 修改时间：18:37:32" itemprop="dateCreated datePublished" datetime="2023-07-13T13:25:47+08:00">2023-07-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>生成对抗网络 (Generative Adversarial Network, GAN)
+是一类神经网络，通过轮流训练判别器 (Discriminator) 和生成器
+(Generator)，令其相互对抗，来从复杂概率分布中采样，例如生成图片、文字、语音等。今天我们开始阅读并且实现最简单的GAN网络。</p>
+<h3 id="熵">熵</h3>
+<p>熵的公式如下： <span class="math display">\[
+Entropy=-\sum_i P(i)\log_2P(i)
+\]</span> 其中，已知一个离散变量 i 的概率分布P(i)，<span
+class="math inline">\(\log_2P(i)\)</span>为此时的最短编码长度，熵的含义即为平均编码长度。对于连续变量
+x 的概率分布P(x)，熵的公式可以表示为： <span class="math display">\[
+Entropy=-\int P(x)\log_2P(x)dx
+\]</span></p>
+<p>在熵的公式中，对于离散变量和连续变量，我们都是计算了 负的可能性的对数
+的期望，代表了该事件理论上的平均最小编码长度，所以熵的公式也可表示如下，公式中的x~P代表我们使用概率分布P来计算期望，熵又可以简写为H：
+<span class="math display">\[
+H(P)=Entropy=\mathbb{E}_{x\sim P}[-\log P(x)]
+\]</span></p>
+<h3 id="交叉熵">交叉熵</h3>
+<p>假如我们现在需要预报东京天气，在真实天气发生之前，我们不可能知道天气的概率分布；但为了下文的讨论，我们需要假设：对东京天气做一段时间的观测后，可以得到真实的概率分布P（在机器学习模型中，对应标签的真实值）。在观测之前，我们只有预估的概率分布Q（在机器学习模型中，对应预测器），使用估计得到的概率分布，可以计算估计的熵：
+<span class="math display">\[
+EstimatedEntropy=\mathbb{E}_{x\sim Q}\left[-\log Q(x)\right]
+\]</span>
+和香农的目标一样，我们希望编码长度尽可能的短，所以我们需要对比我们的编码长度和理论上的最小编码长度(熵)。假设经过观测后，我们得到了真实概率分布P，在天气预报时，就可以使用P计算平均编码长度，实际编码长度基于Q计算，这个计算结果就是P和Q的交叉熵。这样，实际编码长度和理论最小编码长度就有了对比的意义。
+<span class="math display">\[
+CrossEntropy=\mathbb{E}_{x\sim P}[-\log Q(x)]
+\]</span>
+交叉熵使用H(P,Q)表示，意味着使用P计算期望，使用Q计算编码长度；所以H(P,Q)并不一定等于H(Q,P)，除了在P=Q的情况下，H(P,Q)
+= H(Q,P) =
+H(P)。对于编码长度，我们使用假设的概率分布Q来计算，因为它是预估用于编码信息的。因为熵是理论上的平均最小编码长度，所以交叉熵只可能大于等于熵。换句话说，如果我们的估计是完美的，即Q=P，那么有H(P,Q)
+= H(P)，否则，H(P,Q) &gt; H(P)。由于<span class="math inline">\(-\log
+Q(x) \ge 0\)</span>，熵的值只可能大于等于0，当且仅当 ： <span
+class="math display">\[
+\begin{cases}P(i)=1,i=i_k\\P(i)=0,i\neq i_{k}\end{cases}
+\]</span> 时，熵为0。交叉熵越小，代表预测结果越准确。</p>
+<h3 id="多分类交叉熵">多分类交叉熵</h3>
+<p>假设一个动物照片的数据集中有5种动物，且每张照片中只有一只动物，每张照片的标签都是one-hot编码。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Fox</th>
+<th>Cat</th>
+<th>Dog</th>
+<th>Rabbit</th>
+<th>Pig</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>[1,0,0,0,0]</td>
+<td>[0,1,0,0,0]</td>
+<td>[0,0,1,0,0]</td>
+<td>[0,0,0,1,0]</td>
+<td>[0,0,0,0,1]</td>
+</tr>
+</tbody>
+</table>
+<p>我们的两个预测模型对于Fox的图片预测结果如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Prediction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Q1</td>
+<td>[0.4, 0.3, 0.05, 0.05, 0.2]</td>
+</tr>
+<tr class="even">
+<td>Q2</td>
+<td>[0.98, 0.01, 0, 0, 0.01]</td>
+</tr>
+</tbody>
+</table>
+<p>两个模型交叉熵计算结果如下： <span class="math display">\[
+\begin{aligned}H(P_1,Q_1)&amp;=-\sum_iP_1(i)\log_2Q_1(i)\\&amp;=-(1\log0.4+0\log0.3+0\log0.05+0\log0.05+0\log0.2)\approx0.916\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}H(P_1,Q_2)&amp;=-\sum_iP_1(i)\log_2Q_2(i)\\&amp;=-(1\log0.98+0\log0.01+0\log0+0\log0+0\log0.01)\approx0.02\end{aligned}
+\]</span></p>
+<p>交叉熵对比了模型的预测结果和数据的真实标签，随着预测越来越准确，交叉熵的值越来越小，如果预测完全正确，交叉熵的值就为0。</p>
+<h3 id="二分类交叉熵">二分类交叉熵</h3>
+<p>在二分类模型中，标签只有是和否两种；这时，可以使用二分类交叉熵作为损失函数。假设数据集中只有猫和狗的照片，则交叉熵公式中只包含两种可能性：
+<span class="math display">\[
+\begin{gathered}
+\begin{aligned}H(P,Q)=-\sum_{i=(cat,dog)}P(i)\log Q(i)\end{aligned} \\
+=-P(cat)\log Q(cat)-P(dog)\log Q(dog)
+\end{gathered}
+\]</span></p>
+<p><span class="math display">\[
+H(P,Q)=-P(cat)\log Q(cat)-\text{(}1-P(cat))\log\left(1-Q(cat)\right)
+\]</span></p>
+<p>如果采用以下定义： <span class="math display">\[
+\begin{aligned}P&amp;=P(cat)\\\tilde{P}&amp;=Q(cat)\end{aligned}
+\]</span> 那么交叉熵可以写成这种形式： <span class="math display">\[
+BinaryCrossEntropy=-P\log\tilde{P}-\text{(}1-P)\log{(1-\tilde{P})}
+\]</span></p>
+<h3 id="生成器-判别器模型">生成器-判别器模型</h3>
+<p>初始化判别器D的参数 <span
+class="math inline">\(\theta_d\)</span>和生成器G的参数<span
+class="math inline">\(\theta_g\)</span></p>
+<p><strong>循环k次更新判别器之后，使用较小的学习率来更新一次生成器的参数</strong>，训练生成器使其尽可能能够减小生成样本与真实样本之间的差距，也相当于尽量使得判别器判别错误。
+从真实样本中采样m个样本 { <span class="math inline">\(x^1,x^2,\ldots
+x^m\)</span> } ，从先验分布噪声中采样 m 个噪声样本 { <span
+class="math inline">\(z^1,z^2,\ldots,z^m\)</span> } 并通过生成器获取 m
+个生成样本 { <span
+class="math inline">\(\tilde{x}^1,\tilde{x}^2,\ldots,\tilde{x}^m\)</span>
+}
+。固定生成器G，训练判别器D尽可能好地准确判别真实样本和生成样本，尽可能大地区分正确样本和生成的样本。</p>
+<p>多次更新迭代之后，最终理想情况是使得判别器判别不出样本来自于生成器的输出还是真实的输出。亦即最终样本判别概率均为0.5。</p>
+<p>在GAN的模型下，判别器是一个二分类问题，交叉熵可以定义为： <span
+class="math display">\[
+H((x_1,y_1),D)=-y_1\log D(x_1)-(1-y_1)\log(1-D(x_1))
+\]</span> 其中，假定 <span
+class="math inline">\(y_1\)</span>为正确样本分布，那么对应的<span
+class="math inline">\((1-y_1)\)</span>就是生成样本（因为在这种情况下，生成的不是真实图片，所以判别器应该将其判定为错）的分布。
+<span class="math inline">\(D\)</span>表示判别器，则 <span
+class="math inline">\(D(x_1)\)</span> 表示判别样本为正确的概率， <span
+class="math inline">\(1-D(x_1)\)</span>
+则对应着判别为错误样本的概率。这里仅仅是对当前情况下的交叉熵损失的具体化。</p>
+<p>将上式推广到N个样本后，将N个样本相加得到对应的公式如下： <span
+class="math display">\[
+H((x_{i},y_{i})_{i=1}^{N},D)=-\sum_{i=1}^{N}y_{i}\operatorname{log}D(x_{i})-\sum_{i=1}^{N}(1-y_{i})\operatorname{log}(1-D(x_{i}))
+\]</span> 对于GAN中的样本点 <span
+class="math display">\[x_i\]</span>对应于两个出处,要么来自于真实样本,要么来自于生成器生成的样本<span
+class="math inline">\(\tilde{x}\sim G(z)\)</span>这里的<span
+class="math inline">\(z\)</span>服从于投到生成器中噪声的分布。生成器试图将以下函数最小化，而判别器则尝试将其最大化：
+<span class="math display">\[
+E_x[log(D(x))]+E_z[log(1-D(G(z)))]
+\]</span> 将最小化-最大化的过程放在公式里，可得： <span
+class="math display">\[
+\min_G\max_DV(D,G)=\mathbb{E}_{\boldsymbol{x}\sim
+p_{\dim}(\boldsymbol{x})}[\log
+D(\boldsymbol{x})]+\mathbb{E}_{\boldsymbol{z}\sim
+p_{\boldsymbol{z}}(\boldsymbol{z})}[\log(1-D(G(\boldsymbol{z})))].
+\]</span></p>
+<p>在此函数中：</p>
+<ul>
+<li><code>D(x)</code> 是判别器对真实数据实例 x 真实的概率的估计值。</li>
+<li>Ex 是所有真实数据实例的预期值。</li>
+<li><code>G(z)</code> 是指定的噪声 z 时的输出。</li>
+<li><code>D(G(z))</code> 是判别器对虚构实例是真实概率的估计值。</li>
+<li>Ez 是指向生成器的所有随机输入的预期值（实际上是所有生成的虚构实例
+G(z) 的预期值）。</li>
+<li>该公式由真实分布和生成的分布之间的<a
+target="_blank" rel="noopener" href="https://developers.google.com/machine-learning/glossary?hl=zh-cn#cross-entropy">交叉熵</a>得出。</li>
+</ul>
+<p>生成器不能直接影响函数中的 <code>log(D(x))</code>
+项，因此对于生成器，最大限度降低损失相当于最小化
+<code>log(1 - D(G(z)))</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/12/Record-Ubuntu22-04-installation/" rel="prev" title="Record Ubuntu22.04 installation">
+      <i class="fa fa-chevron-left"></i> Record Ubuntu22.04 installation
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%86%B5"><span class="nav-number">1.</span> <span class="nav-text">熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">2.</span> <span class="nav-text">交叉熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E7%B1%BB%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">3.</span> <span class="nav-text">多分类交叉熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E7%B1%BB%E4%BA%A4%E5%8F%89%E7%86%B5"><span class="nav-number">4.</span> <span class="nav-text">二分类交叉熵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%99%A8-%E5%88%A4%E5%88%AB%E5%99%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">生成器-判别器模型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
