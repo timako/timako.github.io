@@ -151,6 +151,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/12/Record-Ubuntu22-04-installation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/12/Record-Ubuntu22-04-installation/" class="post-title-link" itemprop="url">Record Ubuntu22.04 installation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-12 22:49:38" itemprop="dateCreated datePublished" datetime="2023-07-12T22:49:38+08:00">2023-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-13 10:40:00" itemprop="dateModified" datetime="2023-07-13T10:40:00+08:00">2023-07-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>又重装了一次系统，这次重装的是Ubuntu 22.04
+LTS，记录一下重装系统+系统配置的过程</p>
+<p>分区之前的就不记录了，分区时提示“No EFI ...”，分配了1G
+<code>EFI</code>，500M
+<code>/boot</code>（虽然可能用不到，但是网上的教程比较杂乱），剩下的空间全部分配给<code>/</code></p>
+<p>分区结束拔掉u盘重新启动，配置网络，选择ZJUWLAN-Secure，网络类型TUNNELLD
+TLS，选中 <code>No CA Certificate</code>，输入账户密码</p>
+<p>把<code>clash-linux-amd64</code>复制到系统上启动，初始化<code>.config/clash</code>文件夹，把配置文件复制进来</p>
+<p>配置代理，设置<code>Manual</code>，HTTP Proxy和HTTPS
+Proxy都填写<code>127.0.0.1:7890</code>，Socks
+Host选择填写<code>127.0.0.1:7891</code>，搜索Startup，把clash设置成开机启动项。</p>
+<p>打开<code>Displays</code>设置双屏</p>
+<p>去https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/设置清华源</p>
+<p>安装anaconda</p>
+<p>安装nvidia显卡驱动
+https://blog.csdn.net/Perfect886/article/details/119109380</p>
+<p>安装cuda
+https://blog.csdn.net/qq_37041791/article/details/126932883</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  </span><br><span class="line"> </span><br><span class="line">sudo apt-get install g++</span><br><span class="line"> </span><br><span class="line">sudo apt-get install gcc</span><br><span class="line"> </span><br><span class="line">sudo apt-get install make</span><br></pre></td></tr></table></figure>
+<p>安装cudnn：默认安装即可</p>
+<p>安装pytorch和torchvision：download.pytorch.org/whl/cu117下载torch
+1.13.1 and torchvision 0.14.1，anaconda创建新环境，pip install安装</p>
+<p>最后下载vscode，测试pytorch是否可以使用cuda</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import torch</span><br><span class="line"></span><br><span class="line"># setting device on GPU if available, else CPU</span><br><span class="line">device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)</span><br><span class="line">print(&#x27;Using device:&#x27;, device)</span><br><span class="line">print()</span><br><span class="line"></span><br><span class="line">#Additional Info when using cuda</span><br><span class="line">if device.type == &#x27;cuda&#x27;:</span><br><span class="line">    print(torch.cuda.get_device_name(0))</span><br><span class="line">    print(&#x27;Memory Usage:&#x27;)</span><br><span class="line">    print(&#x27;Allocated:&#x27;, round(torch.cuda.memory_allocated(0)/1024**3,1), &#x27;GB&#x27;)</span><br><span class="line">    print(&#x27;Cached:   &#x27;, round(torch.cuda.memory_reserved(0)/1024**3,1), &#x27;GB&#x27;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>到此完成</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/11/HRRVC-paper-reading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -600,7 +689,7 @@ class="math inline">\(\theta\)</span>来决定的。经过decoder之后，我们
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
