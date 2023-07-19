@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这篇文章是我在找综述的时候看见友怡老师写的，跟老师给我的毕业论文题目很相近，优先阅读一下 Introduction 数据驱动的方法存在一些问题。 1. 首先，头发数据库对大存储的要求限制了其在移动设备等资源受限平台上的应用。 2. 其次，建模结果的质量取决于从数量有限的数据库中搜索到的头发样本。最终结果的结构仍然受到最初检索到的样本的限制。 3. 此外，贪心搜索过程缓慢且难以平衡局部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HairGANs paper reading">
+<meta property="og:url" content="http://example.com/2023/07/14/HairGAN-paper-reading/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="这篇文章是我在找综述的时候看见友怡老师写的，跟老师给我的毕业论文题目很相近，优先阅读一下 Introduction 数据驱动的方法存在一些问题。 1. 首先，头发数据库对大存储的要求限制了其在移动设备等资源受限平台上的应用。 2. 其次，建模结果的质量取决于从数量有限的数据库中搜索到的头发样本。最终结果的结构仍然受到最初检索到的样本的限制。 3. 此外，贪心搜索过程缓慢且难以平衡局部">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pic/hairgans/1.png">
+<meta property="og:image" content="http://example.com/pic/hairgans/2.png">
+<meta property="article:published_time" content="2023-07-14T03:59:41.000Z">
+<meta property="article:modified_time" content="2023-07-19T09:40:41.388Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pic/hairgans/1.png">
+
+<link rel="canonical" href="http://example.com/2023/07/14/HairGAN-paper-reading/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>HairGANs paper reading | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/14/HairGAN-paper-reading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HairGANs paper reading
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-14 11:59:41" itemprop="dateCreated datePublished" datetime="2023-07-14T11:59:41+08:00">2023-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-19 17:40:41" itemprop="dateModified" datetime="2023-07-19T17:40:41+08:00">2023-07-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章是我在找综述的时候看见友怡老师写的，跟老师给我的毕业论文题目很相近，优先阅读一下</p>
+<h3 id="introduction">Introduction</h3>
+<p>数据驱动的方法存在一些问题。 1.
+首先，头发数据库对大存储的要求限制了其在移动设备等资源受限平台上的应用。
+2.
+其次，建模结果的质量取决于从数量有限的数据库中搜索到的头发样本。最终结果的结构仍然受到最初检索到的样本的限制。
+3.
+此外，贪心搜索过程缓慢且难以平衡局部细节相似性和全局形状相似性之间的选择标准。</p>
+<p>生成对抗网络能够比 CNN
+和自动编码器模型更好地捕获模型分布，因为它们的对抗训练性质倾向于自行学习更通用的距离度量，而不是手动编码[14]。</p>
+<p>论文的工作： 1. 介绍了用于单视图头发建模的 GAN 架构。 2. GAN 将 2D
+方向图转换为 3D 体积场，对发丝的占用和方向信息进行编码； 3.
+建议在生成器网络的设计中加入一个维度扩展层，将一系列 2D 特征转换为单通道
+3D 特征； 4. 通过考虑鉴别器的输出和潜在特征来优化生成器参数。</p>
+<h3 id="概览">概览</h3>
+<p>我们首先澄清我们的统一模型空间，其中所有合成头发数据库和相同的胸围模型都对齐。基于统一的模型空间，我们生成与相应的
+2D 方向和置信图耦合的真实 3D 体积场的训练数据（§4）。接下来，我们介绍
+Hair-GAN 的架构和损失函数（§5）。与原始的 GAN
+类似，我们的网络也由判别器和生成器组成。给定真实的头发图像作为输入，通过使用我们训练有素的头发生成器，我们可以根据
+2D 方向和置信图以及胸围深度图（所有这些都从图像中提取）恢复 3D
+头发结构，并且最后合成一个高质量的3D头发模型（§6）。</p>
+<h3 id="数据准备">数据准备</h3>
+<p>受[19]的启发，我们将发型视为分布在人体周围的局部风格图案的融合，与<code>[1][2][11]</code>相反，其中不同的发型被视为不同风格的发丝组合。与之前的研究类似，我们收集了一个原始头发数据集，其中包含[1]提供的约
+300 个 3D
+人造头发模型，这些模型已经与相同的半身模型对齐。我们定义一个统一的模型空间（§4.1）来准备我们的训练数据（§4.2），包括真实的
+3D 体积场 Y 和 2D 头发信息图 X 。</p>
+<p><strong>统一模型空间</strong></p>
+<p><img src="/pic/hairgans/1.png" /></p>
+<p>我们将边界框定义为模型空间的边界，在其中生成真实的 3D
+头发方向体积并捕获 2D 头发方向和置信度图。图 2 以我们定义的边界框和 2D
+捕获为例。</p>
+<p><strong>包围盒</strong>：模型空间由考虑到半身模型和除一些极长头发（手动选择）之外的所有数据库头发模型而定义的边界框界定。然后在边界框（H×H×D）内细分分辨率为128×128×96的3D体积。</p>
+<p><strong>2D
+捕捉</strong>：为了获得定义的模型空间下的二维信息图X，我们将相机直接放置在半身模型上。图像平面的中心与边界框的中心重合。二维图像是通过比例尺为
+1024/H 的正交投影捕获的。因此，拍摄图像的尺寸为1024×1024。</p>
+<p><strong>训练数据</strong></p>
+<p>按照[2]，我们通过简单地翻转每个模型，将数据库的数量增加一倍，并删除辫子和辫子等受约束的发型。我们的数据库中有
+303 种发型，从短到长，从直到卷。我们围绕边界框的中心随机旋转头发。
+X轴旋转范围为-15o至15o，Y轴旋转范围为-30o至30o，Z轴旋转范围为-20o至20o。由于所有这些数据库模型都是由多边形带组成，与
+Hu 等人相同。 [2]，我们将多边形条转换为密集的 3D 方向体积，视为地面实况
+Y，然后生长线。然后，我们以第 4.1 节中定义的相机视图姿势将发丝渲染到 2D
+图像。然而，为了消除真实头发图像和合成头发图像的差异，我们使用[16]的迭代方法计算捕获图像的二维方向和置信度图。考虑到真实图像质量的多样性，数据库的迭代随机范围为
+3 到 5。通常，方向图和 Chai 等人中存在方向模糊性。
+[17]已经证实，应该消除方向模糊性以确保毛发生长的正确方向。我们可以将模型链方向投影到图像平面来更新方向图以避免歧义。然后，我们以高置信度扩散方向以获得最终的像素密集方向图，并将方向向量编码到颜色空间。此外，如前所述，胸围模型也应该被视为我们网络的一个条件，因为头发是从头皮长出来并分布在身体各处。我们通过逐像素光线追踪来计算半身深度图，得到半身到相机的距离，并将距离除以
+D，将值范围限制在 [0, 1] 范围内。最后生成由 2D
+方向图、置信度图和半身深度图组成的网络输入 X。</p>
+<p><img src="/pic/hairgans/2.png" /></p>
+<p>所有 2D 映射的值都在 [0, 1] 范围内，3D 和 2D
+方向向量都在颜色空间中编码。对于每个数据库模型，我们计算 12 对 X 和
+Y。因此，我们得到 3636 对训练数据。训练数据生成示例如图3所示</p>
+<h3 id="hairgans">HairGans</h3>
+<p>通过从输入图像中提取的 2D 贴图和胸围深度图，我们的 Hair-GAN
+的目标是生成一个 3D
+方向体积，对占用和方向信息进行编码，以指导头发合成。网络的输入是大小为1024×1024的2D张量X，由统一模型空间中捕获的4个特征通道组成：头发方向图（编码为RG颜色的2D方向向量XY）、置信度图（置信度值作为灰色）和半身深度图（深度值作为灰色）。输出是大小为
+128 × 128 × 96 的 3D 张量 Y，其中头发方向向量以 RGB
+颜色编码。我们首先描述我们的对抗训练网络的损失函数（§5.1）。接下来，我们描述
+Hair-GAN 的架构（§5.2 ）和训练策略（§5.3 ）。</p>
+<p><strong>Loss Function</strong></p>
+<p><strong>WGAN</strong>：在面对最优Discriminator时，GAN的Generator的优化目标可以写成JS散度的形式：
+<span class="math display">\[
+C(G)=-\log(4)+2\cdot JSD\left(p_\text{data}\left\|p_g\right.\right)
+\]</span>
+有关JS散度的目标函数会带来<strong>梯度消失</strong>的问题。如果Discriminator训练得太好，Generator就无法得到足够的梯度继续优化，而如果Discriminator训练得太弱，指示作用不显著，同样不能让Generator进行有效的学习。改进后的<span
+class="math inline">\(-logD\)</span>
+trick虽然解决了梯度消失的问题，然而又带来了mode
+collapse、梯度不稳定等问题，同样存在理论缺陷。</p>
+<p>WGAN认为需要对“生成分布与真实分布之间的距离”探索一种更合适的度量方法。作者们把眼光转向了<strong>Earth-Mover</strong>距离，简称<strong>EM</strong>距离，又称<strong>Wasserstein</strong>距离。</p>
+<p>EM距离的定义为： <span class="math display">\[
+W(P_r,P_g)=\inf_{\gamma\sim\Pi(P_r,P_g)}\mathbb{E}_{(x,y)\sim\gamma}[||x-y||]
+\]</span> 其中，<span class="math inline">\(\Pi(P_r,P_g)\)</span>是<span
+class="math inline">\(P_r\)</span>和<span
+class="math inline">\(P_g\)</span>组合起来的所有可能的<strong>联合分布</strong>的集合，对于每一个可能的联合分布<span
+class="math inline">\(\gamma\)</span>从中采样$(x,y)<span
+class="math inline">\(，可以得到一个真实样本x和生成样本y，并可以计算样本距离\)</span>||x-y||<span
+class="math inline">\(，所以可以计算该联合分布下**样本对距离**的期望值\)</span>_{(x,y)}[||x-y||]$，在<strong>所有可能的联合分布中</strong>能够对这个期望值取到的下界，就定义为EM距离。</p>
+<p>作者们自然想到把EM距离用到GAN中。直接求解EM距离是很难做到的，不过可以用一个叫<strong>Kantorovich-Rubinstein
+duality</strong>的理论把问题转化为： <span class="math display">\[
+\begin{aligned}W(\mathbb{P}_r,\mathbb{P}_\theta)=\sup_{\|f\|_L\leq1}\mathbb{E}_{x\sim\mathbb{P}_r}[f(x)]-\mathbb{E}_{x\sim\mathbb{P}_\theta}[f(x)]\end{aligned}
+\]</span>
+这个公式的意思是对所有满足<strong>1-Lipschitz</strong>限制的函数<em>f</em>取到
+<span class="math display">\[
+\mathbb{E}_{x\sim\mathbb{P}_r}[f(x)]-\mathbb{E}_{x\sim\mathbb{P}_\theta}[f(x)]
+\]</span>
+的上界。简单地说，Lipschitz限制规定了一个连续函数的最大局部变动幅度，如K-Lipschitz就是：
+<span class="math display">\[
+|f(x_1)-f(x_2)|\leq K|x_1-x_2|
+\]</span> 然后可以用神经网络的方法来解决上述优化问题： <span
+class="math display">\[
+\max_{w\in\mathcal{W}}\mathbb{E}_{x\sim\mathbb{P}_r}[f_w(x)]-\mathbb{E}_{z\sim
+p(z)}[f_w(g_\theta(z)]
+\]</span> 这里的 <span class="math display">\[
+\{f_w\}_{w\in\mathcal{W}}
+\]</span>
+就是要优化的参数。这个神经网络和GAN中的Discriminator非常相似，只存在一些细微的差异，作者把它命名为<strong>Critic</strong>以便与Discriminator作区分。</p>
+<p>WGAN的几大优越之处：</p>
+<ul>
+<li>不再需要纠结如何平衡Generator和Discriminator的训练程度，大大提高了GAN训练的稳定性：Critic（Discriminator）训练得越好，对提升Generator就越有利。</li>
+<li>即使网络结构设计得比较简陋，WGAN也能展现出良好的性能，包括避免了mode
+collapse的现象，体现了出色的鲁棒性。</li>
+<li>Critic的loss很准确地反映了Generator生成样本的质量，因此可以作为展现GAN训练进度的定性指标。</li>
+</ul>
+<p><strong>WGAN-GP</strong>：作者们发现WGAN有时候也会伴随样本质量低、难以收敛等问题。WGAN为了保证Lipschitz限制，采用了weight
+clipping的方法，然而这样的方式可能过于简单粗暴了，因此他们认为这是上述问题的罪魁祸首。具体而言，他们通过简单的实验，发现weight
+clipping会导致两大问题：模型建模能力弱化，以及梯度爆炸或消失。他们提出的替代方案是给Critic
+loss加入<strong>gradient penalty
+(GP)</strong>，这样，新的网络模型就叫<strong>WGAN-GP</strong>。 <span
+class="math display">\[
+L=\mathbb{E}_{\tilde{\boldsymbol{x}}\sim\mathbb{P}_g}\left[D(\tilde{x})\right]-\mathbb{E}_{\boldsymbol{x}\sim\mathbb{P}_r}\left[D(x)\right]+\lambda\mathbb{E}_{\hat{\boldsymbol{x}}\sim\mathbb{P}_{\hat{\boldsymbol{x}}}}\left[(\|\nabla_{\hat{\boldsymbol{x}}}D(\hat{\boldsymbol{x}})\|_2-1)^2\right]
+\]</span> GP项的设计逻辑是：当且仅当一个可微函数的梯度范数（gradient
+norm）在任意处都不超过1时，该函数满足1-Lipschitz条件。至于为什么限制Critic的梯度范数趋向1（two-sided
+penalty）而不是小于1（one-sided
+penalty），作者给出的解释是，从理论上最优Critic的梯度范数应当处处接近1，对Lipschitz条件的影响不大，同时从实验中发现two-sided
+penalty效果比one-sided penalty略好。</p>
+<p>另一个值得注意的地方是，用于计算GP的样本<span
+class="math inline">\(\hat{x}\)</span>是生成样本和真实样本的线性插值。</p>
+<p><strong>回到HairGANs</strong></p>
+<p>对于我们的例子，目标是训练一个生成器 G(X )，将输入 2D
+张量映射到所需的输出 3D 张量<span
+class="math inline">\(\widetilde{\mathcal{Y}}:\widetilde{\mathcal{Y}}=\bar{G(\mathcal{X})}\)</span>。同时，<strong>鉴别器通过条件潜在投影（conditional
+latent projection）<span class="math inline">\(P(\mathcal{X})\)</span>
+最大化 [?]<span
+class="math inline">\(G(\mathcal{X})\)</span>的生成器分布与 <span
+class="math inline">\(\mathcal{Y}\)</span> 的目标分布之间的
+Wasserstein-1 距离</strong>。</p>
+<p><strong>辨别器</strong>：最小化损失函数： <span
+class="math display">\[
+\begin{aligned}
+L_{D}=&amp;
+E[D(\widetilde{\mathcal{Y}},P(\mathcal{X}))]-E[D(\mathcal{Y},P(\mathcal{X}))]  
++\lambda
+E[(\|\nabla_{\hat{\mathcal{Y}}}D(\hat{\mathcal{Y}},P(\mathcal{X}))\|_{2}-1)^{2}]
+\end{aligned}
+\]</span>
+[?]这里的D是表示什么？作为discriminator的话为什么有两个参数</p>
+<p>其中，第三项是随机变量<span
+class="math inline">\(\hat{\mathcal{Y}}\)</span>的梯度惩罚，其中<span
+class="math inline">\(\hat{\mathcal{Y}}\leftarrow\epsilon\mathcal{Y}+(1-\epsilon)\mathcal{Y}\)</span></p>
+<p><strong>生成器</strong>：最小化损失函数： <span
+class="math display">\[
+L_G=-E[D(\widetilde{\mathcal{Y}},P(\mathcal{X}))]
+\]</span>
+然而，在我们的实验中，我们发现这个函数不能很好地优化生成器，因为真假之间的分布差异不能轻易地通过正负号来确定。受到之前工作
+[25] 的启发，他们使用预训练网络 VGG
+的选定层作为特征表示，将纹理风格从源图像转移到目标图像。</p>
+<p>[25]：Image style transfer using convolutional neural networks
+图像风格迁移。Deep
+CNN已经能制造强大的电脑视觉系统可以提取图片高级别的含义。在VGG中，使用了3个3x3卷积核来代替7x7卷积核，使用了2个3x3卷积核来代替5*5卷积核，这样做的主要目的是在保证具有相同感知野的条件下，提升了网络的深度，在一定程度上提升了神经网络的效果。</p>
+<p>在这里，我们在我们的研究中引入了风格和内容的损失，其中这些特征在选定的<strong>鉴别器层</strong>的域中表示。因此，优化生成器的目标是最小化能量：
+<span class="math display">\[
+\begin{aligned}
+L_{G}^{*}&amp; =\alpha L_{content}+\beta L_{style}  
+=\alpha\sum L_{content}^l+\beta\sum L_{style}^l \\
+\end{aligned}
+\]</span> 如文献[ 25 ]所述，内容损失由特征表示之间的误差平方损失来定义:
+<span class="math display">\[
+L_{content}^l=\frac12\sum_{ik}[f_{ik}^l(\mathcal{Y},P(\mathcal{X}))-f_{ik}^l(\widetilde{\mathcal{Y}},P(\mathcal{X}))]^2
+\]</span>
+其中l为选择层，i为第i个特征图，k为特征张量中的索引，f为判别器特征(以图4表示)。风格损失由Gram矩阵之间的均方距离定义，其中每个元素通过向量化特征图i和j之间的内积计算：$A_{ij}<sup>l=<em>kf</em>{ik}</sup>lf_{jk}^l。目标是：
+<span class="math display">\[
+L_{style}^l=\frac{1}{4N_l^2M_l^2}\sum_{ij}[A_{ij}^l(\mathcal{Y},P(\mathcal{X}))-A_{ij}^l(\widetilde{\mathcal{Y}},P(\mathcal{X}))]^2
+\]</span> 式中：Nl为特征图的个数，Ml为特征张量(如l = 0 , N0 = 3 , M0 =
+128 × 128 × 96)的大小。</p>
+<h3 id="训练框架">训练框架</h3>
+<ul>
+<li>in(resolution, feature channels)</li>
+<li>out(resolution, feature channels)</li>
+<li>C(input channels, output channels, strides)</li>
+<li><span class="math inline">\(\overline{\omega}\)</span> is
+dimensional expansion layer</li>
+<li>ζ is fully connected node</li>
+<li>use + as the element-wise addition in the residual blocks
+constituted by C</li>
+<li>I denotes the input tensor current layer</li>
+<li>对于所有2D卷积层C2，滤波器大小为5</li>
+<li>对于所有3D卷积层C3，滤波器大小为3</li>
+<li>X -、Y -、Z - info的运算块具有相同的方案形式</li>
+</ul>
+<p>生成器：我们将生成器举例说明为一些块。第一块以X为输入，由4个残差网络[
+26
+]组成，从前层到后层逐元素添加激活，以得到从高层到低层信息的残差修正，降采样后的特征映射为潜码，从1024
+× 1024到128 × 128，特征数量从4个增加到256个。然后，X -，Y -和Z
+-块分别将潜在代码编码为通道数为96的特征，这些特征在结果卷中沿Z轴的分辨率。$将2D特征的继承转换为3D特征的单个通道。然后，我们将X
+-，Y -，Z
+-块的输出作为输入串联到下面的3D残差卷积网络中。具体见图4和表1。</p>
+<p>判别器。考虑到2D输入X与3D期望输出" Y / Y "之间的对应关系，受文献[ 20
+]的启发，我们将" Y / Y "与编码X的特征图P ( X )串联到与" Y / Y
+"具有相同分辨率的3D隐空间，然后将串联后的3D特征张量通过多个滤波器进行卷积，直到ζ层，最终区分真假。</p>
+<h3 id="相关工作">相关工作</h3>
+<p>头发是网络游戏、虚拟世界和虚拟现实应用中数字角色的重要组成部分之一。高质量
+3D
+头发建模技术在计算机图形学中得到了广泛的研究，这通常需要专业技能和数天的艰苦手工工作。关于精毛建模方法的详细讨论请参阅调查[15]。</p>
+<p>基于图像的头发建模是一种很有前途的方法，可以根据捕获的头发图像创建引人注目的头发结构。根据所需图像的数量，基于图像的头发建模方法可以大致分为多视图头发建模和单视图头发建模。多视图头发建模方法
+[4] [5] [6] [7] [8] [9] 从多个视图创建高质量的 3D
+头发建模，这通常需要复杂的硬件设置、良好控制的环境，加工周期长。它们对消费者不友好，因为普通用户不容易掌握这些多视图捕获系统和专业技能。虽然单视图头发建模方法与单视图一样变得越来越流行和重要，但未经校准的图像在互联网上广泛存在。柴等人。
+[16][17]首先介绍了利用不同类型的先验知识（包括层边界和遮挡以及阴影线索）进行单视图头发建模的技术[3]。他们的方法的一个主要问题是缺乏对远离输入图像的视图中的几何形状的控制。</p>
+<p>通过 3D
+合成发型数据库提供了整个发型的概念上有说服力的先验知识。胡等人。
+[2]通过对数据库中搜索到的不同发型进行组合，通过与用户的几次笔画进行拟合来重建完整的头发形状。柴等人。
+[1]将模型重新混合步骤提出到预计算阶段。从扩大的数据库中找到大约 5-40
+个候选者，然后对这些候选者进行变形，以获得具有细节相似性的模型结果。为了将
+3D 头发数据库丰富到 40K
+模型，他们对发丝进行聚类并重新组合这些聚类模型。张等人。
+[18]仅使用轮廓拟合搜索到的候选者进行基于四视图的头发建模来构建平滑的粗糙头发形状，并通过纹理融合和螺旋拟合引入风格细节。在[19]中，他们引入了一种基于局部补丁的搜索策略来寻找具有足以指导头发合成的局部风格模式的候选者，而不是在全局中寻找具有相同风格的候选者。所有这些数据驱动的方法都需要存储数百或数千个发型数据库</p>
+<p>深度学习最近的成功也给头发建模领域带来了显着的进步。柴等人。
+[1]提出了一种全自动头发建模方法，通过用深度卷积神经网络代替用户交互来进行头发分割和头发生长方向估计。胡等人。
+[10]引入基于深度学习的头发属性分类器来提高数据驱动方法的候选检索性能。为了获得从
+2D 图像知识到 3D 头发表示的端到端学习，Zhou 等人。 [11]
+使用编码器-解码器架构生成表示为 3D 点序列的发丝，以 2D
+方向场作为输入。但他们的头发表示被参数化为头皮上的低分辨率网格，这导致建模结果质量较低。在同时进行的工作中，Saito
+等人。 [12] 证明了 3D
+占用场和相应的高分辨率流场很容易通过神经网络处理，并且与传统的基于链的表示兼容，用于高保真建模和渲染。然而，在他们的方法中，占用场和流场是从同一体积潜在空间分开解码的。他们对
+ResNet-50
+的预训练网络进行微调，将输入图像编码为头发系数，这些系数通过训练好的嵌入网络与体积潜在空间对齐。由于编码器处理过程中存在压缩以及潜在系数对齐中的信息丢失，因此他们的结果缺乏输入图像和输出头发结构之间的对应细节。相比之下，以
+2D 信息图作为输入，我们的方法更直接地训练 Hair-GAN
+来预测编码占用和方向信息的 3D
+体积场，同时考虑输入图像和建模结果之间的细节对应关系。</p>
+<p>Goodfellow 等人提出了生成对抗网络（GAN）。
+[14]作为构建可以模仿目标分布的生成模型的框架。 GAN
+的目标是通过依次迭代训练判别器和生成器来训练生成器模型。条件 GAN [20]
+是一种使用条件信息作为判别器和生成器的
+GAN，被视为图像领域很有前途的工具，例如条件图像合成 [21]、从文本生成图像
+[22] 和图像到图像的翻译[23]。我们采用 GAN 从 2D 图像信息中恢复 3D
+头发结构，利用 GAN
+的强大功能来重新创建复杂数据集的分布。我们利用鉴别器的潜在空间来增强分布中的真实值和目标输出的相似性。我们的
+Hair-GAN 旨在学习从 2D 信息图到 3D
+体积占用和方向场的参数转换，没有中间潜在空间。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/13/GAN-reading-and-implementation/" rel="prev" title="GAN reading and implementation">
+      <i class="fa fa-chevron-left"></i> GAN reading and implementation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/14/AutoHair-paper-reading/" rel="next" title="AutoHair paper reading">
+      AutoHair paper reading <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%87%86%E5%A4%87"><span class="nav-number">3.</span> <span class="nav-text">数据准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hairgans"><span class="nav-number">4.</span> <span class="nav-text">HairGans</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%AD%E7%BB%83%E6%A1%86%E6%9E%B6"><span class="nav-number">5.</span> <span class="nav-text">训练框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">6.</span> <span class="nav-text">相关工作</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这篇文章是关于头发建模的survey，在2007年发布的。主要阅读关于建模相关的部分（第二章） Introduction 真实地表现头发的结构、运动和视觉外观仍然是一个open challenge。 Background: 人的头部通常由大量头发组成，其中有超过 100,000 根发丝。然而，每根发丝的直径都非常小。考虑到这种二元性，研究人员研究了头发是否应该被视为整体或单独的相互作用的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A survey on hair modeling: Styling, simulation, and rendering">
+<meta property="og:url" content="http://example.com/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="这篇文章是关于头发建模的survey，在2007年发布的。主要阅读关于建模相关的部分（第二章） Introduction 真实地表现头发的结构、运动和视觉外观仍然是一个open challenge。 Background: 人的头部通常由大量头发组成，其中有超过 100,000 根发丝。然而，每根发丝的直径都非常小。考虑到这种二元性，研究人员研究了头发是否应该被视为整体或单独的相互作用的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pic/hairmodel/1.png">
+<meta property="og:image" content="http://example.com/pic/hairmodel/2.png">
+<meta property="og:image" content="http://example.com/pic/hairmodel/3.png">
+<meta property="og:image" content="http://example.com/pic/hairmodel/4.png">
+<meta property="article:published_time" content="2023-07-15T04:30:58.000Z">
+<meta property="article:modified_time" content="2023-07-19T09:40:31.782Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pic/hairmodel/1.png">
+
+<link rel="canonical" href="http://example.com/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>A survey on hair modeling: Styling, simulation, and rendering | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          A survey on hair modeling: Styling, simulation, and rendering
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-15 12:30:58" itemprop="dateCreated datePublished" datetime="2023-07-15T12:30:58+08:00">2023-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-19 17:40:31" itemprop="dateModified" datetime="2023-07-19T17:40:31+08:00">2023-07-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章是关于头发建模的survey，在2007年发布的。主要阅读关于建模相关的部分（第二章）</p>
+<h3 id="introduction">Introduction</h3>
+<p>真实地表现头发的结构、运动和视觉外观仍然是一个open challenge。</p>
+<p><strong>Background</strong>: 人的头部通常由大量头发组成，其中有超过
+100,000
+根发丝。然而，每根发丝的直径都非常小。考虑到这种二元性，研究人员研究了头发是否应该被视为整体或单独的相互作用的发丝。目前，还没有一种方法被接受为头发造型的行业标准。</p>
+<p><strong>Challenge</strong>: 1.
+在现实世界中，每个人的头发结构和视觉外观差异很大，这使得任何一种建模方案准确捕捉所有多样性都是一项艰巨的任务。
+2.
+此外，由于头发的高度复杂性，提供最佳视觉保真度的算法往往在计算上过于繁琐，无法用于具有严格性能要求的交互式应用程序。包含头发建模的各种应用都有各自的挑战和要求，例如外观、准确性或性能。
+3.
+此外，真实头发仍然存在未知的特性，使得目前难以创建物理上正确的建模方案。</p>
+<p><strong>本次调查的工作</strong>: 1.
+讨论头发建模所面临的主要挑战，并回顾过去处理这些复杂问题的方法的优点和局限性。
+2.
+此外，还将提供有关选择具有严格性能要求的适当头发造型方案应用程序的见解。包含头发建模的各种应用都有各自的挑战和要求，例如外观、准确性或性能。</p>
+<h3 id="overview">Overview</h3>
+<p>头发建模可以分为三大类：<strong>发型设计</strong>、<strong>头发模拟</strong>和<strong>头发渲染</strong>。
+-
+发型设计被视为对头发形状的建模，结合了头发的几何形状并指定了发丝的密度、分布和方向。
+-
+头发模拟涉及头发的动态运动，包括头发与物体（例如头部或身体）之间的碰撞检测，以及头发相互之间的相互作用。
+-
+头发渲染涉及与屏幕上头发的视觉描绘相关的颜色、阴影、光散射效果、透明度和抗锯齿问题。</p>
+<p>考虑以下一般性问题来分析这些方法的几个类别：</p>
+<ol type="1">
+<li>头发形状：该方法可以处理长发、卷发或波浪发吗？还是仅限于更简单的短直发？</li>
+<li>头发运动：该方法是否足够稳健，能够处理大的、不稳定的头发运动，这些运动可能导致头发簇的动态分组和分裂以及复杂的头发碰撞？</li>
+<li>性能与视觉保真度：该方法的主要焦点是对视觉上真实的头发进行建模，快速有效地对头发进行建模，还是在虚拟头发的性能速度和视觉保真度之间提供平衡？</li>
+<li>硬件要求：该方法是否依赖于特定的 GPU
+功能或其他硬件限制，或者是否具有跨平台兼容性？</li>
+<li>用户控制：用户对头发的控制程度如何？控制是直观的还是繁琐的？</li>
+<li>头发属性：该方法能否处理各种头发属性（例如，粗与细、湿与干、硬与松）并允许这些值在整个应用过程中动态变化？</li>
+</ol>
+<p><strong>头发建模的应用场景</strong>：</p>
+<ul>
+<li><p>物理上精确的方式模拟头发的结构、运动、碰撞和其他复杂性。</p></li>
+<li><p>在娱乐行业中，例如动画长片，建模物理上不可能的发型或动作通常是一个目标。在这些情况下，需要高度的用户控制来以期望的方式引导头发，由于头发体积的大小，这是一项耗时且昂贵的工作。加速和简化这一过程的方法将是头发建模研究的重要补充。</p></li>
+<li><p>交互系统，例如虚拟环境和视频游戏。在这些应用中，虚拟头发的性能速度是其外观的主要重点。尽管最近的努力提高了头发建模算法的效率，但仍然希望提高所得头发的质量以捕获更多的头发形状、运动和属性。</p></li>
+</ul>
+<h3 id="头发发型styling">头发发型（styling）</h3>
+<p>创造理想的发型通常是一个漫长、乏味且不直观的过程。在本节中，将解释控制其最终形状的真实头发的主要属性，然后介绍对虚拟头发进行造型的方法。发型设计技术可分为三个一般步骤：将头发附着在头皮上、赋予头发整体或整体形状以及管理更细的头发特性。</p>
+<p><strong>头发结构和几何特性</strong>：</p>
+<p>头发形状多种多样，包括天然的和人造的。根据种族群体的不同，人们可以拥有自然光滑、锯齿状、波浪形或卷曲的头发。这些几何特征可以由每根发丝的各种结构和物理参数产生，包括其横截面形状、卷曲程度或从头皮中出来的方式[4]，[5]。头发科学家将头发类型分为三大类：<strong>亚洲头发、非洲头发和白种人头发</strong>。亚洲发丝非常光滑且规则，具有圆形横截面，而非洲发丝看起来不规则，具有非常椭圆形的横截面。白种人的头发介于这两个极值之间，从光滑的头发到高度卷曲的头发。此外，大多数人通常通过刘海、马尾辫、辫子等各种方式剪发和定型头发。化妆品还可以临时（使用发胶、摩丝等）或永久（通过烫发）改变头发的形状。
+、直发等），创造出各种各样的人造发型。</p>
+<p>如今使用的大多数虚拟造型方法实际上并没有在其算法中考虑真实头发的物理结构。大多数虚拟造型方法并不是尝试匹配现实世界头发形状的生成过程，而是尝试将最终结果与现实世界头发的外观相匹配。因此，虚拟造型技术<strong>不适合</strong>需要<strong>物理上正确</strong>的头发结构模型的应用，而是适合需要<strong>视觉上合理</strong>的解决方案的应用。然而，最近人们一直在努力创建造型方法，通过考虑已知的真实物理头发属性
+[6] 并模仿更自然的用户与头发的交互
+[7]，更准确地反映发型生成的现实过程。尽管前景光明，但这些努力仍处于早期阶段。</p>
+<h3 id="将头发附在头皮上">将头发附在头皮上</h3>
+<p>由于构成人类头发的单个发丝数量较多，因此手动将每根发丝放置在头皮上是极其繁琐的。为了简化该过程，人们开发了许多直观的技术，将头发以
+2D 或 3D 方式放置在头皮上。</p>
+<p><strong>2D Placement</strong></p>
+<p>在一些造型方法中，发束并不直接放置在头部模型的表面上。相反，用户以交互方式在
+2D map上绘制头发位置，随后使用映射函数将其投影到 3D
+模型上。将发丝基（strand base）映射到头皮 3D 轮廓的球形映射是流行的方法
+[2]、[8]。</p>
+<p><img src="/pic/hairmodel/1.png" /></p>
+<p>或者，Kim 和 Neumann [9] 定义了一个 2D
+参数化补丁，用户将其包裹在头部模型上，如图 1
+所示。用户可以交互地指定样条补丁（spline
+patch）的每个控制点。在由补丁的两个参数坐标定义的 2D
+空间中，用户可以放置各种头发簇。</p>
+<p><strong>[?]</strong> 将发根放置在 2D
+几何体上对于用户来说很容易并且具有灵活性，但是将 2D 发根映射到 3D
+弯曲头皮上可能会导致扭曲。班多等人。
+[10]使用谐波映射，并通过使用世界空间中头皮上对应点之间的距离而不是它们的
+2D 地图位置来基于泊松盘分布来分布根粒子来补偿映射失真。</p>
+<p><strong>3D Placement</strong></p>
+<p>另一种方法是将发根直接 3D 放置到头皮上。 Patrick 和 Bangay [11]
+提出了一个交互式界面，用户可以在其中选择头部模型的三角形。这组选定的三角形定义了头皮，即头发将附着的头部网格区域，头皮的每个三角形都是一缕头发的初始部分。</p>
+<p><strong>股线在头皮上的分布</strong></p>
+<p>放置发丝的一种流行方法是在头皮上均匀分布，因为它可以很好地近似真实的头发分布。一些基于缕的方法将发根随机分布在根缕部分覆盖的头皮的每个区域内[12]、[13]、[14]，但如果缕部分重叠，则在重叠区域中会产生更高的头发密度，这可能会产生分散注意力的结果。为了保证头发在整个头皮上的均匀分布，Kim
+和 Neumann [9]
+将头发均匀地分布在头皮上，然后将每个生成的发根分配给其所有者簇。一些方法还允许用户在头皮上绘制局部头发密度[15]，[13]。通过将密度值表示为颜色级别，可以以
+3D
+方式可视化头发密度。控制这个参数有助于产生进一步的发型，例如稀疏的头发。
+Hernandez 和 Rudomin [15]
+扩展了绘画界面以控制进一步的头发特征，例如长度或卷曲度。</p>
+<h3 id="全局头发形状生成">全局头发形状生成</h3>
+<p>一旦头发被放置在头皮上，就必须给它一个所需的整体形状，这通常是通过基于几何、基于物理或基于图像的技术来完成的，本节将对此进行解释和评估。</p>
+<p><strong>基于几何的发型</strong></p>
+<p><img src="/pic/hairmodel/2.png" /></p>
+<p>基于几何的发型设计方法主要依赖于头发的参数化表示，以便允许用户通过直观且易于使用的界面交互式地定位头发组。这些参数化表示可以涉及以三棱柱或广义圆柱体的形式表示头发或缕的表面。</p>
+<p><strong>a) 参数化曲面</strong>。使用 2D
+曲面来表示发束组已成为头发建模的常用方法
+[16]、[17]、[18]。通常，这些方法使用参数化曲面（例如 NURBS
+曲面）的补丁来减少用于对一段头发建模的几何对象的数量。这种方法还有助于加速头发模拟和渲染。这些
+NURBS
+曲面（通常称为发带）被赋予头皮上的位置、方向和结的权重，以定义所需的头发形状。然后使用纹理映射和
+Alpha
+映射使条带看起来更像发丝。可以通过指定一些控制曲线或发束来创建完整的发型。然后将这些发束的控制点水平和垂直连接以形成一条带。虽然这种方法可以用于快速发型生成和模拟，但由于条带的平面表示，可以建模的发型类型受到限制（见图2a）。</p>
+<p>为了缓解头发的扁平外观，Liang 和 Huang [17] 使用三个多边形网格将 2D
+条带扭曲成 U 形，从而为头发提供更多体积。在此方法中，将 2D
+条带的每个顶点投影到头皮上，然后将顶点连接到其投影。额外的几何细节也可以从表面表示中提取。
+Kim 和 Neumann [19] 开发了一种称为薄壳体积 (Thin Shell Volume, TSV)
+的模型，该模型从参数化表面开始创建发型。通过沿法线方向偏移表面来增加头发的厚度。然后将各个发束分布在
+TSV 内（见图 2b）。使用 Noble 和 Tang [18] 的方法可以在 NURBS
+曲面上生成额外的头发簇。从已成形为所需发型的 NURBS 体积开始，然后沿着
+NURBS
+体积的等值曲线生成关键头发曲线。从关键头发曲线挤出的轮廓曲线会创建额外的簇，然后可以独立于原始
+NURBS
+曲面对其进行动画处理。这种方法为使用表面方法捕获的头发形状和运动类型增加了更大的灵活性。</p>
+<p><strong>b) 缕和广义圆柱（Wisps and Generalized
+Cylinders.）</strong>。束和广义圆柱体已被用作直观的方法来控制多束发束的定位和形状[14]，[20]，[21]，[22]，[13]。这些方法减少了定义发型所需的控制参数的数量。一组发束往往依赖于一条一般空间曲线的定位，该曲线用作限定广义圆柱体（也称为毛发簇）的横截面的半径函数的中心。簇头发模型是由分布在这些广义圆柱体内部的发束创建的（见图
+3）。然后，用户可以通过编辑一般曲线的位置来控制发束的形状。这些簇或缕可以创造出许多流行的发型，从许多非洲发型的辫子和扭曲[22]到马尾辫等受约束的形状。一些不依赖于分组为固定簇组的股线的更复杂的发型更难以用这些方法来实现。此外，虽然它们为用户提供了直观的控制，但发型的塑造通常很乏味，因为创建发型的时间通常与最终风格的复杂性相关。</p>
+<p><strong>c)
+多分辨率编辑</strong>。复杂的头发几何形状也可以用广义圆柱体的层次结构来表示[9]、[23]，允许用户在形状建模中选择所需的控制级别。较高级别的集群为快速全局形状编辑提供了有效的方法，而较低级别的集群操作则允许直接控制详细的头发几何形状
+- 直至每根发丝。 Kim 和 Neumann [9]
+进一步表明，他们的多分辨率方法可以生成复杂的发型，例如使用复制粘贴工具将一个簇的详细局部几何形状转移到其他簇的卷曲簇（见图
+4）。</p>
+<p><strong>基于物理的发型</strong></p>
+<p>一些发型设计技术与基于物理的头发动画密切相关。这些方法依赖于方法中几个关键参数的规范，从控制单根头发的悬臂梁到控制整个头发体积的流体流动方法。这些方法通常减少用户对最终发型的直接控制量。</p>
+<ol type="a">
+<li><p>悬臂梁。在材料强度领域，悬臂梁被定义为仅一端嵌入固定支撑件中的直梁。安乔等人。
+[3]认为这与人类发丝的情况类似，发丝固定在毛孔处，另一端是自由的。考虑到重力是弯曲的主要来源，该方法模拟悬臂梁的简化静力学以获得一根发丝静止时的姿势。然而，由于使用线性模型，需要对线施加额外的力以获得正确的最终形状。</p></li>
+<li><p>流体流动。 Hadap 和 Magnat-Thalmann [24]
+基于静态头发形状类似于障碍物周围流体流动快照的想法，将静态发型建模为流体流动的流线。用户通过在头发体积周围放置流、涡流和源来创建发型。例如，使用涡流在所需位置的头发中形成卷曲（见图
+5）。</p></li>
+<li><p>设置矢量和运动场的样式。
+Yu[8]观察到矢量场和头发在特定点上都具有明确的方向，同时它们也是体积数据；这促使他使用静态
+3D 矢量场来建模发型，见图
+6a。给定通过叠加程序定义的向量场基元生成的全局场，通过追踪向量场的场线来提取发丝。一根发丝从头皮上的指定位置开始，然后沿着矢量场累积矢量的方向以一定的步长生长，直到达到所需的长度。类似地，粒子可以在运动场中用于塑造股线[25]。粒子被赋予固定的寿命并通过运动场进行追踪。粒子的历史包括整根发丝；改变粒子的寿命就会改变头发的长度。</p></li>
+</ol>
+<p>Choe 和 Ko [13]
+还使用向量场来计算全局头发位置，同时考虑头发弹性。他们的算法计算头发关节角度，该角度最能解释矢量场的影响和发束的自然趋势，以检索其静止位置。该方法的另一个重要特征是用户能够定义头发约束。头发约束导致在
+3D
+空间的一部分上生成约束向量场，该约束向量场随后按权重参数的比例修改原始向量场。头发变形是通过使用先前应用于修改后的矢量场的算法来计算的。实际上，用户可以指定三种类型的约束：点约束、轨迹约束和方向约束。事实证明，头发约束对于创建涉及马尾辫、发束或辫子的复杂发型非常有用，如图
+1 和 1 所示。 6b和6c。</p>
+<p><strong>从图像生成发型</strong></p>
+<p>最近的发型生成方法提出了一种基于图像自动重建头发来生成发型的替代方法。
+a)
+从照片生成头发。孔等人。是第一个使用真发图片自动创建发型的人[26]。他们的方法仅仅是几何方法，包括从对象头发的不同角度构建
+3D
+头发体积。然后使用启发式在该体积内生成发丝，该启发式不能确保头发方向性的忠实性。这种方法最适合简单的发型。</p>
+<p>格拉布利等人。引入了一种利用头发照明来从图像中捕获头发局部方向的方法[27]。他们的系统通过研究受试者头发在各种受控照明条件下的反射率来工作。固定视点使他们能够处理完美配准的图像。通过考虑单个视点并使用单个滤波器来确定发丝的方向，该方法仅部分重建头发。巴黎等人。通过考虑各种视点以及多个定向过滤器，将这种方法[28]扩展为更准确的方法；他们的策略主要包括在给定的
+2D
+位置上测试多个滤波器，并选择能为该位置提供最可靠结果的滤波器。该方法捕获头发可见部分的局部方向，从而产生与原始发型视觉上忠实的结果（见图
+7）。魏等人。
+[29]随后通过利用多个视点固有的几何约束来提高该方法的灵活性，这证明足以检索头发模型，而不需要受控的照明条件或复杂的设置。</p>
+<ol start="2" type="a">
+<li>从草图生成头发。毛等人。
+[30]开发了一个基于草图的系统，专门用于卡通发型建模。给定 3D
+头部模型，用户以交互方式在头皮上绘制应放置头发的边界区域。然后，用户在头部的前视图周围绘制目标发型的轮廓。系统生成代表发型边界的轮廓表面。在轮廓表面和头皮之间生成代表头发簇的曲线。这些曲线成为代表大部分头发的多边形条的脊柱，类似于[16]、[17]使用的条。</li>
+</ol>
+<p>这个基于草图的系统只需用户最少的输入即可快速创建卡通发型。然而，用于表示头发的条带或簇多边形并不适合建模更复杂的发型，例如现实世界中可观察到的发型。</p>
+<p><img src="/pic/hairmodel/3.png" /></p>
+<p><strong>估计</strong></p>
+<p>本节中描述的每种全局头发造型方法都适用于不同情况下的头发造型。表 1
+显示了几种全局整形方法在头发形状灵活性、用户控制以及手动设置或输入时间方面的比较。算法可以建模的头发形状范围越大，其在实践中的适用性就越广泛。为了便于将精确的细节放置在头发中所需的位置，用户控制的水平很重要。此外，虽然一些造型方法可以通过自动处理快速捕捉头发形状，但其他方法则需要耗时的手动设置或由用户输入。</p>
+<p>如表 1
+所示，基于几何形状的发型设计技术，例如通过广义圆柱体或参数化曲面，通常可以让用户对头发有很大程度的控制；然而，由于头发体积庞大且复杂，手动定位头发可能是一项乏味且耗时的任务。用户使用
+Kim 和 Neumman [9]
+提出的多分辨率广义圆柱方法创建发型的时间在几分钟到几个小时之间，具体取决于头发形状的复杂程度。虽然参数化曲面通常提供快速的发型创建方法，但由于
+2D
+曲面表示，结果往往仅限于平坦、直的发型。或者，一缕或广义的圆柱体可以模拟许多直或卷的发型形状。</p>
+<p>本节中描述的每种全局头发造型方法都适用于不同情况下的头发造型。表 1
+显示了几种全局整形方法在头发形状灵活性、用户控制以及手动设置或输入时间方面的比较。算法可以建模的头发形状范围越大，其在实践中的适用性就越广泛。为了便于将精确的细节放置在头发中所需的位置，用户控制的水平很重要。此外，虽然一些造型方法可以通过自动处理快速捕捉头发形状，但其他方法则需要耗时的手动设置或由用户输入。通过基于物理的技术（例如通过流体流动或矢量场）控制头发的体积通常需要用户不太繁琐的输入；然而，许多复杂发型的细节通常很难通过这种互动来捕捉。许多参数对于发型设计来说可能不直观，并且与基于几何的方法相比，用户通常对发型创建的具体控制较少。</p>
+<p>Wei
+等人已证明，即使设置相对简单，从图像生成发型也是一个高度自动化的过程。
+[29]。从图像创建的最终发型可能非常令人印象深刻，但这些方法的局限性在于它们来自现实世界中必须存在的发型，使得建模的样式范围通常不如基于几何或基于物理的方法灵活。从草图生成的发型可以让最终的头发形状具有更多的创造力，尽管如果没有繁琐的用户参与，就不可能实现特定的更精细的细节，例如辫子头发。</p>
+<p>最近有一些技术建立在不同方法的优势之上。例如，Choe 和 Ko [13]
+的工作以缕状形式对头发进行建模，其中用户编辑控制缕状形状的原型线，但也利用矢量场和头发约束来实现复杂的头发形状，例如辫子、发髻和马尾辫。虽然没有提供手动输入的确切时间，但用户输入的量仍然被认为很高，并且是整个虚拟发型设计过程中最耗时的方面。</p>
+<h3 id="管理更细的头发特性">管理更细的头发特性</h3>
+<p>在头发被赋予整体形状后，通常需要改变头发的一些更精细、更局部的属性，以创建更真实的外观（例如卷曲或体积）或捕获头发的其他特征，例如水或定型产品的影响。在实践中，大多数控制更精细细节的技术都与几何或基于物理的方法结合使用来定义全局头发形状（第
+2.3.1 和 2.3.2 节）。</p>
+<p><strong>卷发和波浪的细节</strong></p>
+<p>一旦定义了全局形状，可能需要添加局部细节，例如卷曲、波浪或噪音，以实现头发的自然外观。
+Yu[8]通过使用一类三角偏移函数生成不同类型的头发卷曲。因此，可以通过控制不同的几何参数（例如偏移函数的幅度、频率或相位）来创建各种发型。为了防止头发看起来太均匀，偏移参数与从一个头发簇到另一个头发簇不同的随机项相结合（见图
+8a）。类似地，通过将分离行为结合到单个发束中，可以使通过流体流动成形的头发产生更自然的外观，该分离行为允许发束基于概率函数脱离流体流[24]。</p>
+<p><img src="/pic/hairmodel/4.png" /></p>
+<p>Choe 和 Ko [13]
+用几缕头发建模发型，每缕头发的整体形状由主发束的形状决定。在一缕内，线之间的相似程度由长度分布、偏差半径函数和模糊值（
+a length distribution, a deviation radius function, and a fuzziness
+value.）控制。主链的几何形状被分解为轮廓组件和细节组件。细节组件是使用马尔可夫链过程从原型链构建的，其中主链和原型链之间的相似程度可以通过吉布斯分布来控制。因此，最终的发型是全局一致的，同时包含极大地有助于其真实感的细微变化，如图
+8b 所示。</p>
+<p>这些局部形状变化的方法有助于减轻虚拟头发的合成外观；然而，由于它们中的大多数都包含某种形式的随机生成，因此用户对更精细的细节的控制较少。这种半自动过程有助于加速发型的创建，因为如果手动执行这些微小的细节可能需要许多工时。另一方面，如果链受到扰动导致不自然的碰撞，则随机生成也可能导致不必要的伪影。此外，这些方法没有考虑计算头发几何形状的物理头发属性，尽管众所周知，第
+2.1 节中描述的这些特征对头发形状有很大影响[4]、[5]。</p>
+<p>为了自动生成自然头发的精细几何形状，包括波浪或卷发，Bertails 等人。
+[6]最近推出了一种新的发型设计方法，使用静态弹性杆的机械精确模型（基尔霍夫模型）。该方法基于势能最小化，考虑了头发的自然卷曲以及头发纤维横截面的椭圆度（见图
+9）。虽然不适合创建复杂的发型，但这种方法有望实现更准确的发型生成过程，并考虑到个体头发纤维的特性。因此，它对于化妆品原型设计很有用。最近，这种方法被扩展到头发动力学（参见第
+3.2.4 节）。</p>
+<p><strong>生成头发体积</strong></p>
+<p>大多数基于几何的发型设计方法通过使用体积基元隐式地赋予头发体积（参见第
+2.3.1
+节），而基于物理的方法通常会考虑头发自碰撞，以产生体积发型。将头发视为连续介质的方法
+[25]、[24]、[8]、[13]
+通过使用再现发丝之间碰撞效果的连续特性（例如通过矢量场或流体动力学。当发丝变得更靠近时，这些技术要么由于矢量或运动场的布局而阻止它们相交，要么促进排斥运动以使它们彼此分开。</p>
+<p>由于检测发丝之间的碰撞可能很困难，而且至少非常耗时，Lee 和 Ko [31]
+开发了一种技术，可以增加发型的体积，而无需定位发丝之间的特定交叉点。这个想法是，头上纬度较高的发丝会覆盖毛孔较低的发丝。创建多个头部外壳层，其尺寸与原始头部几何形状不同。根据发丝毛孔的位置，将发丝与特定的外壳进行检查。然后使用头发-头部碰撞检测和响应算法。此方法仅适用于保持垂直方向的准静态头部的情况。</p>
+<p><strong>造型产品和水效果建模</strong></p>
+<p>发胶、慕斯、凝胶等定型产品对头发的外观有显著的影响，包括头发运动后的发型恢复、头发整体运动的僵硬、固定剂产品的黏附性导致的发束大团块、头发体积的变化等。</p>
+<p>Lee和Ko [ 31
+]开发了一种方法来模拟发胶对发型的影响。当头发由于外力或头部运动而移动时，发型力用于使发型恢复。因此，一个初始的发型可以在运动后恢复。当凝胶应用于头发时，渴望的是保留变形的发型，而不是回到最初的风格。该算法在仿真过程中通过更新造型力来保持变形后的形状。或者，可折断的静态链接或动态键可以用来捕获发型恢复，通过在头发附近的部分之间施加额外的弹簧力来模仿发型产品所产生的头发的额外聚集[
+32 ]，[ 33 ]。</p>
+<p>发型产品还增加了头发运动的刚度，允许卷曲的头发部分与发型产品一起应用，以保留紧密的卷发作为头发的运动。通过使用双骨架模型来模拟头发，可以使用单独的弹簧力来控制头发线的弯曲和卷发的拉伸[
+33 ]。然后，造型产品可以独立地改变弹簧刚度，以产生预期的效果。</p>
+<p>水也会极大地改变头发的外观、形状和运动。由于水被吸收到头发中，头发的质量增加了45
+%，而其弹性模量降低了10倍，从而导致了更易变形和弹性较小的材料[ 34
+]。此外，随着头发的潮湿，头发的体积减小，这是因为由于水的键合性质，头发之间的距离很近。Bertails等人[
+6
+]在其基于物理的静态模型中，通过简单地修改头发变湿时实际变化的相关物理参数：每根纤维的质量和杨氏模量，很容易地将水对头发的影响纳入其中。Ward等[
+33
+]利用其双骨架系统，通过在头发中添加水，自动调节头发沿骨架的质量，对动态湿头发进行建模。
+质量的增加导致头发的整体运动受限和卷发的伸长。灵活的几何结构允许通过改变模拟(见图10)中使用的股线组的半径来动态改变头发的体积。</p>
+<p>Ward等[ 7
+]介绍的交互式虚拟发型系统说明了如何使用水和发型产品通过3D界面动态地改变头发的外观和行为，允许用户执行常见的发廊应用程序(如润湿、切割、吹干等)，以便直观地创建最终的发型。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/14/AutoHair-paper-reading/" rel="prev" title="AutoHair paper reading">
+      <i class="fa fa-chevron-left"></i> AutoHair paper reading
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overview"><span class="nav-number">2.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%8F%91%E5%9E%8Bstyling"><span class="nav-number">3.</span> <span class="nav-text">头发发型（styling）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E5%A4%B4%E5%8F%91%E9%99%84%E5%9C%A8%E5%A4%B4%E7%9A%AE%E4%B8%8A"><span class="nav-number">4.</span> <span class="nav-text">将头发附在头皮上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%A4%B4%E5%8F%91%E5%BD%A2%E7%8A%B6%E7%94%9F%E6%88%90"><span class="nav-number">5.</span> <span class="nav-text">全局头发形状生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9B%B4%E7%BB%86%E7%9A%84%E5%A4%B4%E5%8F%91%E7%89%B9%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">管理更细的头发特性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>

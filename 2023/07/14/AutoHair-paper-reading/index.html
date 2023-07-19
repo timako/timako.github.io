@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。 概览 该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：  基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AutoHair paper reading">
+<meta property="og:url" content="http://example.com/2023/07/14/AutoHair-paper-reading/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。 概览 该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：  基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-14T04:44:43.000Z">
+<meta property="article:modified_time" content="2023-07-19T09:40:35.803Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/07/14/AutoHair-paper-reading/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>AutoHair paper reading | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/14/AutoHair-paper-reading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AutoHair paper reading
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-07-14 12:44:43" itemprop="dateCreated datePublished" datetime="2023-07-14T12:44:43+08:00">2023-07-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-19 17:40:35" itemprop="dateModified" datetime="2023-07-19T17:40:35+08:00">2023-07-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。</p>
+<h3 id="概览">概览</h3>
+<p>该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：</p>
+<ul>
+<li>基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割掩码图、生长方向图、基于聚类方法得到的头发分类类型；</li>
+<li>3D头发模型库。基于少量3D发型扩展生成大量不同类型的3D头发模型库。数据库包含了3D头发模型、正向(front-view)头发分割图、不同角度的渲染图，以及发型生长方向图等元数据；</li>
+<li>基于数据驱动发型匹配和头发建模方法，支持2D头发图片到3D头发模型的快速搜索匹配，以及基于分割模版和头发生成信息，自动拟合变形得到与2D输入形状一致的3D头发模型。</li>
+</ul>
+<h3 id="之前的工作">之前的工作</h3>
+<p>仅根据一张自拍照片以及一些用户指定的笔画来建模 3D
+头发的技术支持许多有趣的消费级应用，包括肖像弹出窗口和发型虚拟试戴
+，虚拟理发和图像空间物理头发模拟，以及肖像重新照明和 3D
+打印肖像浮雕。然而，现有技术的一个主要缺点是需要用户交互，这需要与精心设计的<strong>先验</strong>结合起来，以解决单视图头发几何重建的不适定性。例如，所有现有技术都要求用户从输入图像中分割头发区域；用户需要从根部到尖端绘制几笔来显示头发的连接性和拓扑结构，整个交互过程可能长达五分钟。用户交互的需求阻碍了这些技术更广泛的消费级应用。</p>
+<h3 id="工作概览">工作概览</h3>
+<p>给定单个图像作为输入，的管道会自动生成头发分割以及方向图（§4）。然后将此信息与预先计算的
+3D 头发模型范例 (§5) 相结合，生成最终的股线级头发模型 (§6)。</p>
+<p>具体来说： 1.
+首先使用全局分类器将输入图像分类为几个头发空间分布类别之一（文章中使用了四个）。接下来，作者使用一种新颖的深度神经网络生成精确的头发掩模和粗略量化的方向图（§4.3），该神经网络根据大量带注释的头发图像（§4.1）进行训练，并针对当前的头发分布类别进行定制。
+2. 然后，在公共存储库 (§5) 生成的大量 3D 头发样本中执行基于图像的搜索
+(§6.1)，以获得一些最佳匹配候选者。使用边界对应关系对这些候选模型进行进一步变形和细化，并选择方向图最接近输入图像的模型（§6.2）。
+3. 最后，在选定的 3D 模型和输入图像的方向估计的指导下生成 3D
+发丝（§6.3）。</p>
+<h3 id="头发图像解析">头发图像解析</h3>
+<h4 id="图像预处理">图像预处理</h4>
+<p>启发式地，人们可以假设：
+1）头发分布在靠近面部的区域，很容易被检测到（例如，[Wang et al. 2011;
+Smith et al. 2013]）；但这对于长发无效；
+2）头发有其狭窄的先验颜色分布[Wang et al.
+2011];然而，这对于环境照明和染发来说并不稳健，更不用说与背景的模糊性了；
+3）头发像素通常局部高频；然而，对于深色头发和低质量输入，它们也可以是超级扁平的。
+因此：基于简单的启发式规则几乎不可能找到鲁棒的头发分割解决方案。</p>
+<p>作者的解决方式是： 1. 预处理大量的头发图像（4.1） 2.
+从图像中计算不同类别的头发的不同空间分布（4.2） 3.
+训练分类器来确定头发分布类别，以及<strong>每个类别的神经网络</strong>，以生成相应的头发分割以及单个图像的方向图（4.3）。</p>
+<p>作者从Flickr收集了大约100K 肖像图像，并按照以下步骤准备训练图像：</p>
+<ol type="1">
+<li>图像选择。选择了 20,000
+张清晰可见人脸和头发的高分辨率自然照片，排除了脸部/头发过度遮挡、照明不足或不常见风格化的照片</li>
+<li>掩模分割。使用基于笔划的交互式分割和 PaintSelection
+的抠图工具为每个选定的图像获得二值化的头发区域掩模。</li>
+<li>方向指导。对于每个选定的图像，通过沿着子区域边界绘制笔划，将头发区域
+Mh
+手动分割为几个具有连贯且平滑变化的头发生长方向的子区域。在每个子区域内，添加单个笔划来注释链生长方向。扩散笔划方向以填充整个子区域，并将其与密集计算的每像素无方向方向图(Densely-calculated
+per-pixel nondirectional orientation map) O 相结合以获得最终的方向图
+D。最后，将方向范围<span class="math inline">\([0, 2π)\)</span>离散化为
+4 个 bin（即 <span class="math inline">\([0, 0.5π\)</span>、<span
+class="math inline">\([0.5π, π)\)</span>、<span
+class="math inline">\([π, 1.5π])\)</span>、<span class="math inline">\([
+1.5π,2π)\)</span>）并对每个像素分配标签，得到方向标签图Md。不在头发区域的像素也分配特定的标签。</li>
+</ol>
+<p>在该过程结束时，得到 20,000
+张带注释的肖像图像，每张图像都有两个标签图：一个用于头发掩模的二值掩模图
+Mh，一个用于头发中量化的<strong>每像素</strong>头发生长方向的方向标签图
+Md地区。本文中的方向图被定义为头发的生长方向，从头皮表面到发梢，因为现在的方法只能定义头发的“空间方向”而不能很好地得到“生长方向”（有向的空间方向）因此只要能给出粗量化的标签图，就可以得到实际的带方向的头发生长方向。</p>
+<h4 id="头发分布类">头发分布类</h4>
+<p>自动头发分割的部分困难来自于无数的头发形状和分布。通过利用参考人脸定位，将所有图像聚类为一些头发分布的模糊簇。每个簇代表一类在面部周围具有相似空间分布的发型，用于高质量的头发解析，如下一小节将进行描述。首先详细介绍如何计算头发分布类别，如下所示。对于每个带注释的图像
+I，首先使用 [Cao 等人的稳健面部对齐方法] 检测和定位面部标志。
+2012]，并在参考面坐标系中严格配准I到I′，以进行比例和向上方向校正。如图 3
+所示，然后在极坐标系中围绕 ace 的原点（面心）构建具有 nH 个
+bin（在的实现中为 16 个）的圆形分布直方图 H。每个 bin 都会计算极角落在该
+bin
+范围内的头发像素。归一化后，H可以视为图像的nH维分布特征向量。最后，根据这些分布特征向量，使用
+K 均值聚类将选定的图像聚类为几组（在的实验中为四组）[Lloyd
+1982]。在聚类过程中，使用基于 L1 的Earth Mover’s Distance (EMD)
+计算两个直方图 Ha 和 Hb 之间的距离 [Ling 和 Okada 2007]： <span
+class="math display">\[
+\begin{aligned}d_{\mathcal{H}}(\mathcal{H}_a,\mathcal{H}_b)&amp;=\min_{a(i,j)}\sum_{i=1}^{n_{\mathcal{H}}}\sum_{j=1}^{n_{\mathcal{H}}}\alpha(i,j)d_b(i,j),\\\mathrm{s.t.}\quad\sum_i\alpha(i,j)&amp;=\mathcal{H}_i,\quad\sum_j\alpha(i,j)=\mathcal{H}_j,\quad\alpha(i,j)\geq0,\end{aligned}
+\]</span></p>
+<h4 id="计算层次化网络">计算层次化网络</h4>
+<p>利用第 4.2
+节中计算的预处理训练图像和头发分布类，以自上而下的层次结构设计头发图像解析管道：</p>
+<ol type="1">
+<li>头发区域估计。人脸检测器 [Cao 等人。
+2012]用于生成头发区域候选（即头发边界框）的估计，该估计将由下一层的头发分类器使用。</li>
+<li>头发分类器。对于候选头发区域，R-CNN（具有 CNN 特征的区域）网络
+[Girshick 等人。 2014]
+被训练来选择一个具有最大分数的头发分布类别，并将图像传递到其特定于类别的分割器。</li>
+<li>头发掩码分割器。每类头发掩码分割器使用 DCNN
+进行训练，输出下采样概率图。对地图进行上采样并应用完全连接的 CRF
+[Krähenbühl 和 Koltun 2011] 来细化经常过度平滑的初始分割结果 M。</li>
+<li>头发方向预测器。除了掩模分割器之外，方向预测器还生成方向标签图。然后，对方向标签图进行上采样，并将其与掩模内的像素方向相结合，作为最终方向图
+D，如第 4.1 节中所示。</li>
+</ol>
+<p>管道的结构设计如下：</p>
+<ol type="1">
+<li>在管道的开始，运行 Cao
+等人的面部对齐算法检测一组面部特征点，这些特征点用于在参考面部坐标系中配准图像，如§4.2中所示。</li>
+<li>接下来，对于每个头发分布类别，通过旋转和缩放来调整图像中脸部的 20
+个典型头发区域边界框，从而产生图像的一组候选头发区域。典型的头发区域边界框是通过对每个分布类内的训练图像的头发边界框进行预聚类来生成的。</li>
+<li>然后，候选区域被裁剪并输入头发分类器进行独立处理。注意到，这种头发区域估计仅在测试阶段执行一次，而不是在训练阶段执行一次，在训练阶段，每个训练图像的头发区域是已知的。</li>
+</ol>
+<h3 id="hair-model-exemplars">Hair Model Exemplars</h3>
+<p>利用3D头发数据集辅助头发建模是一种数据驱动(data-driven)的方法，由于数据集中包含了头发结构的先验结构信息，该类方法可以用于提高重建的效果。该文提出的3D头发数据集主要用于发型图片的检索，确定发型的大致形状和结构，用于下一步的头发丝细化，而非用于深度学习网络的训练。</p>
+<p>在文献[4]中，头发融合是在用户使用笔刷指定头发大致方向后进行，用户需要等待时间。在本文头发的重组融合移至预计算阶段，避免了用户交互以及实时计算开销。通过穷尽式的组合方式构建大量的合理发型样本。</p>
+<h3 id="data-driven-hair-modeling">Data-Driven Hair Modeling</h3>
+<p>给定包含头发的肖像图像，通过图像解析计算，得到头发区域图和头发生长预测图。依据图像解析结果，在头发3D合成数据集{}中检索匹配若干候选模型。候选模型根据头发边界对应关系进行变形和改进，得到与输入图片中头发最相似的3D模型。根据头发生长信息对最佳相似模型进行细化，得到最终精细的3D发丝模型。</p>
+<h4 id="image-based-candidate-search">Image-Based Candidate Search</h4>
+<p>根据输入图像重建3D头发的第一步即在3D头发数据集中搜索相似的头发模型。由于数据集中头发模型数量较多，逐一比较效率太低。由于不同发型之间结构和形状差异较大，可以通过两步早期测试排除差异过大的头发模型，提高搜索效率。</p>
+<h4 id="hair-shape-deformation">Hair Shape Deformation</h4>
+<p>候选匹配模型需要进行变形使其能更好的与输入图片中头发匹配。具体的，首先计算头发模型的图像投影轮廓与图片中头发轮廓的对应关系，然后通过全局光滑插值计算两个发型区域的对应关系，最后基于全局对应关系，变形和优化3D头发模型，使之与输入图片中发型更为接近。</p>
+<h3 id="final-hair-generation">Final Hair Generation</h3>
+<p>给定变形后的候选头发模型集<span
+class="math inline">\({H&#39;}\)</span>，采用前面章节介绍的缩略图匹配方法，从集合中选择与输入图发型方向最一致的模型作为最终的头发模型。</p>
+<p>将最终候选模型在模型包围盒空间内转化为一个三维空间方向场，并以指定的方向以及头皮法线作为约束，将方向扩散到整个发型内部。自头皮均匀采样，并按照发型方向生成10,000条发丝。生成的发丝再依据方向场变形[4]得到最终效果。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/14/HairGAN-paper-reading/" rel="prev" title="HairGANs paper reading">
+      <i class="fa fa-chevron-left"></i> HairGANs paper reading
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/" rel="next" title="A survey on hair modeling: Styling, simulation, and rendering">
+      A survey on hair modeling: Styling, simulation, and rendering <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%8B%E5%89%8D%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">之前的工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%A6%82%E8%A7%88"><span class="nav-number">3.</span> <span class="nav-text">工作概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%9B%BE%E5%83%8F%E8%A7%A3%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">头发图像解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">图像预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%88%86%E5%B8%83%E7%B1%BB"><span class="nav-number">4.2.</span> <span class="nav-text">头发分布类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%82%E6%AC%A1%E5%8C%96%E7%BD%91%E7%BB%9C"><span class="nav-number">4.3.</span> <span class="nav-text">计算层次化网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hair-model-exemplars"><span class="nav-number">5.</span> <span class="nav-text">Hair Model Exemplars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-driven-hair-modeling"><span class="nav-number">6.</span> <span class="nav-text">Data-Driven Hair Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#image-based-candidate-search"><span class="nav-number">6.1.</span> <span class="nav-text">Image-Based Candidate Search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hair-shape-deformation"><span class="nav-number">6.2.</span> <span class="nav-text">Hair Shape Deformation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final-hair-generation"><span class="nav-number">7.</span> <span class="nav-text">Final Hair Generation</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
