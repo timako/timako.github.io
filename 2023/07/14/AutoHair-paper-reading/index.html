@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。 概览 该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：  基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割">
@@ -28,7 +28,7 @@
 <meta property="og:description" content="这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。 概览 该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：  基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-14T04:44:43.000Z">
-<meta property="article:modified_time" content="2023-07-19T09:40:35.803Z">
+<meta property="article:modified_time" content="2023-07-19T11:13:14.958Z">
 <meta property="article:author" content="Timako">
 <meta name="twitter:card" content="summary">
 
@@ -194,10 +194,26 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 17:40:35" itemprop="dateModified" datetime="2023-07-19T17:40:35+08:00">2023-07-19</time>
+                <time title="修改时间：2023-07-19 19:13:14" itemprop="dateModified" datetime="2023-07-19T19:13:14+08:00">2023-07-19</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
+                </span>
+            </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -214,13 +230,13 @@
 <ul>
 <li>基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割掩码图、生长方向图、基于聚类方法得到的头发分类类型；</li>
 <li>3D头发模型库。基于少量3D发型扩展生成大量不同类型的3D头发模型库。数据库包含了3D头发模型、正向(front-view)头发分割图、不同角度的渲染图，以及发型生长方向图等元数据；</li>
-<li>基于数据驱动发型匹配和头发建模方法，支持2D头发图片到3D头发模型的快速搜索匹配，以及基于分割模版和头发生成信息，自动拟合变形得到与2D输入形状一致的3D头发模型。</li>
-</ul>
-<h3 id="之前的工作">之前的工作</h3>
-<p>仅根据一张自拍照片以及一些用户指定的笔画来建模 3D
+<li>基于数据驱动发型匹配和头发建模方法，支持2D头发图片到3D头发模型的快速搜索匹配，以及基于分割模版和头发生成信息，自动拟合变形得到与2D输入形状一致的3D头发模型。
+<span id="more"></span> ### 之前的工作
+仅根据一张自拍照片以及一些用户指定的笔画来建模 3D
 头发的技术支持许多有趣的消费级应用，包括肖像弹出窗口和发型虚拟试戴
 ，虚拟理发和图像空间物理头发模拟，以及肖像重新照明和 3D
-打印肖像浮雕。然而，现有技术的一个主要缺点是需要用户交互，这需要与精心设计的<strong>先验</strong>结合起来，以解决单视图头发几何重建的不适定性。例如，所有现有技术都要求用户从输入图像中分割头发区域；用户需要从根部到尖端绘制几笔来显示头发的连接性和拓扑结构，整个交互过程可能长达五分钟。用户交互的需求阻碍了这些技术更广泛的消费级应用。</p>
+打印肖像浮雕。然而，现有技术的一个主要缺点是需要用户交互，这需要与精心设计的<strong>先验</strong>结合起来，以解决单视图头发几何重建的不适定性。例如，所有现有技术都要求用户从输入图像中分割头发区域；用户需要从根部到尖端绘制几笔来显示头发的连接性和拓扑结构，整个交互过程可能长达五分钟。用户交互的需求阻碍了这些技术更广泛的消费级应用。</li>
+</ul>
 <h3 id="工作概览">工作概览</h3>
 <p>给定单个图像作为输入，的管道会自动生成头发分割以及方向图（§4）。然后将此信息与预先计算的
 3D 头发模型范例 (§5) 相结合，生成最终的股线级头发模型 (§6)。</p>
@@ -392,7 +408,7 @@ class="math inline">\({H&#39;}\)</span>，采用前面章节介绍的缩略图�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%8B%E5%89%8D%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">之前的工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%A6%82%E8%A7%88"><span class="nav-number">3.</span> <span class="nav-text">工作概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%9B%BE%E5%83%8F%E8%A7%A3%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">头发图像解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">图像预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%88%86%E5%B8%83%E7%B1%BB"><span class="nav-number">4.2.</span> <span class="nav-text">头发分布类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%82%E6%AC%A1%E5%8C%96%E7%BD%91%E7%BB%9C"><span class="nav-number">4.3.</span> <span class="nav-text">计算层次化网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hair-model-exemplars"><span class="nav-number">5.</span> <span class="nav-text">Hair Model Exemplars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-driven-hair-modeling"><span class="nav-number">6.</span> <span class="nav-text">Data-Driven Hair Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#image-based-candidate-search"><span class="nav-number">6.1.</span> <span class="nav-text">Image-Based Candidate Search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hair-shape-deformation"><span class="nav-number">6.2.</span> <span class="nav-text">Hair Shape Deformation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final-hair-generation"><span class="nav-number">7.</span> <span class="nav-text">Final Hair Generation</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">工作概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%9B%BE%E5%83%8F%E8%A7%A3%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">头发图像解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%BE%E5%83%8F%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">图像预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E5%8F%91%E5%88%86%E5%B8%83%E7%B1%BB"><span class="nav-number">3.2.</span> <span class="nav-text">头发分布类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%82%E6%AC%A1%E5%8C%96%E7%BD%91%E7%BB%9C"><span class="nav-number">3.3.</span> <span class="nav-text">计算层次化网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hair-model-exemplars"><span class="nav-number">4.</span> <span class="nav-text">Hair Model Exemplars</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#data-driven-hair-modeling"><span class="nav-number">5.</span> <span class="nav-text">Data-Driven Hair Modeling</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#image-based-candidate-search"><span class="nav-number">5.1.</span> <span class="nav-text">Image-Based Candidate Search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hair-shape-deformation"><span class="nav-number">5.2.</span> <span class="nav-text">Hair Shape Deformation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final-hair-generation"><span class="nav-number">6.</span> <span class="nav-text">Final Hair Generation</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -409,6 +425,10 @@ class="math inline">\({H&#39;}\)</span>，采用前面章节介绍的缩略图�
           <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
       </div>
   </nav>
 </div>
@@ -444,6 +464,26 @@ class="math inline">\({H&#39;}\)</span>，采用前面章节介绍的缩略图�
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
