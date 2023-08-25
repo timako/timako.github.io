@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CMU 10-708《概率图模型》 课程目标：把大量的模型和算法统一到一棵或几棵一致的结构树中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10_708_class1">
+<meta property="og:url" content="http://example.com/2023/08/22/10-708-class1/index.html">
+<meta property="og:site_name" content="Timako world">
+<meta property="og:description" content="CMU 10-708《概率图模型》 课程目标：把大量的模型和算法统一到一棵或几棵一致的结构树中">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-22T14:34:42.000Z">
+<meta property="article:modified_time" content="2023-08-22T14:38:31.544Z">
+<meta property="article:author" content="Timako">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/08/22/10-708-class1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>10_708_class1 | Timako world</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Timako world</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/22/10-708-class1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Timako">
+      <meta itemprop="description" content="Time heals">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Timako world">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          10_708_class1
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-08-22 22:34:42 / 修改时间：22:38:31" itemprop="dateCreated datePublished" datetime="2023-08-22T22:34:42+08:00">2023-08-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="cmu-10-708概率图模型">CMU 10-708《概率图模型》</h1>
+<p>课程目标：把大量的模型和算法统一到一棵或几棵一致的结构树中
+<span id="more"></span> #### 基本统计模型：</p>
+<p><span class="math display">\[
+P(X_{1},X_{2},X_{3},X_{4},X_{5},X_{6},X_{7},X_{8})
+\]</span></p>
+<p>代表一个八特征维度数据的联合分布，一般我们构造数据分布表来表示这样的数据，比如：</p>
+<table>
+<thead>
+<tr class="header">
+<th>X1</th>
+<th>X2</th>
+<th>X3</th>
+<th>X4</th>
+<th>X5</th>
+<th>X6</th>
+<th>X7</th>
+<th>X8</th>
+<th>P</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>p1</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>p2</td>
+</tr>
+<tr class="odd">
+<td>...</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<p>缺点：表中必须有很多行</p>
+<h4
+id="pearson皮尔逊相关系数"><strong>Pearson(皮尔逊)相关系数</strong>：</h4>
+<p>也叫pearson积差相关系数。衡量两个连续变量之间的线性相关程度 <span
+class="math display">\[
+\rho_{X,Y}=\operatorname{corr}(X,Y)=\frac{\operatorname{cov}(X,Y)}{\sigma_X\sigma_Y}=\frac{E[(X-\mu_X)(Y-\mu_Y)]}{\sigma_X\sigma_Y},
+\]</span>
+Pearson（皮尔逊）相关系数是用协方差除以两个变量的标准差得到的，虽然协方差能反映两个随机变量的相关程度（协方差大于0的时候表示两者正相关，小于0的时候表示两者负相关），但是协方差值的大小并不能很好地度量两个随机变量的关联程度</p>
+<p>pearson是一个介于-1和1之间的值：</p>
+<p>（1）两个变量的线性关系增强时，相关系数趋于1或-1；</p>
+<p>（2）当一个变量增大，另一个变量也增大时，表明它们之间是正相关的，相关系数大于0；</p>
+<p>（3）如果一个变量增大，另一个变量却减小，表明它们之间是负相关的，相关系数小于0；</p>
+<p>（4）如果相关系数等于0，表明它们之间不存在线性相关关系。</p>
+<p>皮尔逊相关性的局限：</p>
+<ol type="1">
+<li><p>如果两个变量不相关的话，皮尔逊相关性为0，<strong>反之不成立</strong>。举例：<span
+class="math inline">\(X ∼ U[−1, 1]\)</span> ，<span
+class="math inline">\(Y = X^2\)</span> ，皮尔逊相关性 = 0。</p></li>
+<li><p>每一对edge只代表两个变量的关系，并且只局限于他们的线性相关性</p></li>
+</ol>
+<p>为此，我们要寻找一种新的度量，它需要满足：</p>
+<ol type="1">
+<li><p>如果X和Y是独立的（<span class="math inline">\(X\perp \!\!\! \perp
+Y\)</span>），则<span class="math inline">\(P_{XY} = P_X
+P_Y\)</span></p></li>
+<li><p>可以度量$P_{XY} <span class="math inline">\(和\)</span> P_X
+P_Y$的“距离”</p></li>
+<li><p>当且仅当X和Y是独立的（<span class="math inline">\(X\perp \!\!\!
+\perp Y\)</span>），距离为0</p></li>
+</ol>
+<h4 id="kl散度"><strong>KL散度</strong></h4>
+<p>KL散度描述了我们用分布Q来估计数据的真实分布P的编码(熵)损失。 <span
+class="math display">\[
+\mathbb{D}_{KL}(P||Q)=\sum_{i = 1}^{N}P(x_i)(logP(x_i)-logQ(x_i))
+\]</span> 对于连续随机变量X： <span class="math display">\[
+\mathbb{D}_{\mathrm{KL}}(P||Q)=\int_{-\infty}^{\infty}p(\mathbf{x})\log(\frac{p(\mathbf{x})}{q(\mathbf{x})})d\mathbf{x}
+\]</span></p>
+<h4
+id="js散度jensen-shannon-divergence"><strong>JS散度</strong>(Jensen-Shannon
+divergence)</h4>
+<p>为了解决相对熵（KL散度不对称的问题），对KL散度进行变体: <span
+class="math display">\[
+\begin{aligned}
+D_{JS}(p||q)&amp;
+==0.5*[D_{KL}(p||\frac{p+q}2)+D_{KL}(q||\frac{p+q}2)]  \\
+&amp;=0.5*[\sum_ip(x_i)\cdot\log\frac{2p(x_i)}{p(x_i)+q(x_i)}+\sum_iq(x_i)\cdot\log\frac{2q(x_i)}{p(x_i)+q(x_i)}]
+\end{aligned}
+\]</span></p>
+<h4 id="互信息与信息增益"><strong>互信息与信息增益</strong></h4>
+<p>说“互信息”的时候，两个随机变量的地位是相同的；说“信息增益”的时候，是把一个变量看成减小另一个变量不确定度的手段。但其实二者的数值是相等的。</p>
+<p>“互信息”或者“信息增益”经常作为决策树中选择特征的标准，两种称呼都很常见。</p>
+<p>互信息的基本形式是： <span class="math display">\[
+I(X,Y)=\iint p(x,y)\log\frac{p(x,y)}{p(x)p(y)}dxdy
+\]</span> 如果 I(X,Y)=0 那么就说明
+p(x,y)≡p(x)p(y)，也就是两个变量是相互独立的，否则是相关的。但是：<span
+class="math inline">\({\log\frac{p(x,y)}{p(x)p(y)}}\)</span>项要求我们对概率密度进行估计。HSIC
+的作用跟互信息类似，但是跟互信息不一样的是，它不需要估计两个变量的概率密度，而是直接转化为采样的形式。</p>
+<h4
+id="希尔伯特-施密特独立性准则hilbert-schmidt-independence-criterion-hsic"><strong>希尔伯特-施密特独立性准则</strong>（Hilbert-Schmidt
+Independence Criterion-HSIC）</h4>
+<p>主要目的是衡量两个<strong>变量</strong>的分布差异，这一点类似于协方差（方差），而对于其本身也是依赖于协方差而构建。</p>
+<p>HSIC 留意到：p(x,y)≡p(x)p(y) 当且仅当对于任意的 f,g，下式都等于 0：
+<span class="math display">\[
+\begin{gathered}
+{C[f,g]} =\iint p(x,y)f(x)g(y)dxdy-\iint p(x)p(y)f(x)g(y)dxdy \\
+=\mathbb{E}_{(x,y)\sim p(x,y)}[f(x)g(y)]-\mathbb{E}_{x\sim
+p(x)}[f(x)]\mathbb{E}_{y\sim p(y)}[g(y)]
+\end{gathered}
+\]</span>
+等号右边是采样的形式，也就是说我们<strong>将这个指标转化为了采样的形式，避免了直接估算概率密度。</strong>这样一来，我们就有一个判断独立性的方法：选取“足够多”的
+f,g，然后计算： <span class="math display">\[
+L_H=\sum_{f,g}\left(C[f,g]\right)^2
+\]</span> 如果在优化问题中，我们希望特征 x,y
+尽可能相互独立，那么我们就可以将<span
+class="math inline">\(L_H\)</span>加入到损失函数中。</p>
+<p>考虑上式的平方形式： <span class="math display">\[
+\begin{aligned}
+\left(C[f,g]\right)^2=&amp; \left(\mathbb{E}_{(x,y)\sim
+p(x,y)}[f(x)g(y)]\right)^2+\left(\mathbb{E}_{x\sim
+p(x)}[f(x)]\right)^2(\mathbb{E}_{y\sim p(y)}[g(y)])^2  \\
+&amp;-2\left(\mathbb{E}_{(x,y)\sim
+p(x,y)}[f(x)g(y)]\right)\left(\mathbb{E}_{x\sim
+p(x)}[f(x)]\right)\left(\mathbb{E}_{y\sim p(y)}[g(y)]\right)
+\end{aligned}
+\]</span> 考虑到期望值的结果跟随机变量的记号没关系，我们有： <span
+class="math display">\[
+\left(\mathbb{E}_{x\sim p(x)}[f(x)]\right)^2=(\mathbb{E}_{x_1\sim
+p(x)}[f(x_1)])(\mathbb{E}_{x_2\sim p(x)}[f(x_2)])\\=\mathbb{E}_{x_1\sim
+p(x),x_2\sim p(x)}[f(x_1)f(x_2)]
+\]</span> 于是，变换后我们得到： <span class="math display">\[
+\begin{aligned}
+\left(C[f,g]\right)^2=&amp; \mathbb{E}_{(x_1,y_1)\sim
+p(x,y),(x_2,y_2)\sim p(x,y)}[f(x_1)f(x_2)g(y_1)g(y_2)]  \\
+&amp;+\mathbb{E}_{x_1\sim p(x),x_2\sim p(x),y_1\sim p(y),y2\sim
+p(y)}[f(x_1)f(x_2)g(y_1)g(y_2) \\
+&amp;-2\mathbb{E}_{(x_1,y_1)\sim p(x,y),x_2\sim p(x),y_2\sim
+p(y)}[f(x_1)f(x_2)g(y_1)g(y_2)]
+\end{aligned}
+\]</span> 这样一来，每一项都是 f(x1)f(x2)g(x1)g(x2)
+的期望，只不过变量的采样分布不一样。</p>
+<p>现在的问题是：<strong>要选择哪些 f, g
+呢？怎样才算“足够多”呢？</strong> 类比向量空间的知识，所有可能的 f(x)
+能组成一个向量空间 F，所有的 g(y) 也一样组成一个向量空间 G
+。如果能把这两个空间的所有“基底”都遍历一遍，那肯定就够了。这时候“<strong>核函数</strong>”就登场了。所谓核函数，是类似于线性代数中“正定矩阵”的存在，就是一个定义在
+X × X 的二元对称函数 K(x1, x2) = K(x2, x1) ，然后我们把一元函数 f(x)
+类比为一个向量，那么：<span class="math inline">\(\int
+K(x_1,x_2)f(x_2)dx_2\)</span>就相当于矩阵乘以向量的矩阵运算，跟矩阵的特征值和特征向量一样，核函数也能定义特征值和特征函数，满足下述恒等式的一元函数
+ψ 就称为这个核函数的特征函数：<span class="math inline">\(\int
+K(x_1,x_2)\psi(x_2)dx_2=\alpha\psi(x_1)\)</span>
+。上面的内容都是铺垫的，其严格定义则是属于“<strong>再生核希尔伯特空间</strong>“范畴。后面我们用到的，实际上是两点性质：</p>
+<ol type="1">
+<li><p>核函数的所有特征函数 ψ1,ψ2,…，构成该空间的一组正交基；</p></li>
+<li><p>核函数的所有特征值 α1,α2,…都是正的，且满足：<span
+class="math inline">\(K(x_1,x_2)=\sum_i\alpha_i\psi_i(x_1)\psi_i(x_2)\)</span></p></li>
+</ol>
+<h4 id="hsic形式">HSIC形式</h4>
+<p>接下来<strong>引入HSIC</strong>：</p>
+<p>首先，假如我们已经有定义在 X×X 的核函数<span
+class="math inline">\(K_{X(x_1,x_2)}\)</span>，那么我们就可以算出对应的特征值
+α1,α2,… 和特征函数 ψ1,ψ2,…；同样地，有了定义在 Y×Y 的核函数<span
+class="math inline">\(K_{Y(y_1,y_2)}\)</span>，我们也可以算出对应的特征值
+β1,β2,…和特征函数 ϕ1,ϕ2,…。由于特征函数构成了基底，我们可以把公式<span
+class="math inline">\(L_H=\sum_{f,g}\left(C[f,g]\right)^2\)</span>改写成以下形式：
+<span class="math display">\[
+L_H=\sum_{i,j}\left(C[\psi_i,\phi_j]\right)^2
+\]</span>
+因为所有的特征值都是正的，所以我们还可以用特征值为权重进行加权求和，而不改变<span
+class="math inline">\(L_H\)</span>的作用： <span class="math display">\[
+{L_H=\sum_{i,j}\alpha_i\beta_j\cdot\left(C[\psi_i,\phi_j]\right)^2}
+\]</span> 代入之前计算的<span
+class="math inline">\(\left(C[f,g]\right)^2\)</span>的形式，我们可以得到：
+<span class="math display">\[
+\begin{aligned}
+L_{H}=&amp; \mathbb{E}_{(x_1,y_1)\sim p(x,y),(x_2,y_2)\sim
+p(x,y)}\left[\sum_{i,j}\alpha_i\beta_j\psi_i(x_1)\psi_i(x_2)\phi_j(y_1)\phi_j(y_2)\right]  \\
+&amp;+\mathbb{E}_{x_1\sim p(x),x_2\sim p(x),y_1\sim p(y),y_2\sim
+p(y)}\left[\sum_{i,j}\alpha_i\beta_j\psi_i(x_1)\psi_i(x_2)\phi_j(y_1)\phi_j(y_2)\right]
+\\
+&amp;-2\mathbb{E}_{(x_1,y_1)\sim p(x,y),x_2\sim p(x),y_2\sim
+p(y)}\left[\sum_{i,j}\alpha_i\beta_j\psi_i(x_1)\psi_i(x_2)\phi_j(y_1)\phi_j(y_2)\right]
+\end{aligned}
+\]</span>
+利用核函数的第二个性质，我们替换方括号里的内容，HSIC正式登场了： <span
+class="math display">\[
+\begin{aligned}
+HSIC(X,Y)=&amp; \mathbb{E}_{(x_1,y_1)\sim p(x,y),(x_2,y_2)\sim
+p(x,y)}\left[K_X(x_1,x_2)K_Y(y_1,y_2)\right]  \\
+&amp;+\mathbb{E}_{x_1\sim p(x),x_2\sim p(x),y_1\sim p(y),y_2\sim
+p(y)}\left[K_X(x_1,x_2)K_Y(y_1,y_2)\right] \\
+&amp;-2\mathbb{E}_{(x_1,y_1)\sim p(x,y),x_2\sim p(x),y_2\sim
+p(y)}\left[K_X(x_1,x_2)K_Y(y_1,y_2)\right]
+\end{aligned}
+\]</span>
+这就是我们最重要寻找的度量相关性的指标，它纯粹是采样的形式，而且 KX,KY
+都是事先给定的、通常是可微的，因此这就是一个可以明确采样计算、可以直接优化的指标！</p>
+<p>在实际计算中，我们可选的核函数有很多，比较常用的是： <span
+class="math display">\[
+K(x_1,x_2)=\exp\left(-\frac{\|x_1-x_2\|_2^2}{\sigma^2}\right)
+\]</span></p>
+<h4 id="偏相关partial-correlation">偏相关（Partial Correlation）</h4>
+<p>是两个变量间的净相关，其他影响这两个变量关系的变量可以称为控制变量。偏相关系数是表示两个变量均剔除控制变量影响后的相关密切程度，等同于将两个变量分别对控制变量的回归残差间的相关系数。偏相关系数的平方表示去掉其他变量的影响后，一个变量可解释的另外一个变量变异的比例。</p>
+<p>对于给定一个随机向量Z，我们衡量X和Y之间的偏相关，也就是衡量消除Z的线性影响后，X和Y的相关性；也就是从Z回归到X和从Z回归到Y的残差的相关性。
+<span class="math display">\[
+\begin{aligned}\rho(X,Y|\mathbf{Z})&amp;=\rho(e_X,e_Y)=\frac{\mathrm{Cov}(e_X,e_Y)}{\sqrt{\mathrm{Var}(e_X)]}\sqrt{\mathrm{Var}(e_Y)}}\\e_X&amp;=X-(\boldsymbol{\beta}_X^T\mathbf{Z}+\mathrm{intercept}_X)\\e_Y&amp;=Y-(\boldsymbol{\beta}_Y^T\mathbf{Z}+\mathrm{intercept}_Y)\end{aligned}
+\]</span>
+其中，残差来自于原始变量减去线性效应，也就是实际值减去预测值，对所得到的残差计算Pearson相关系数，结果就是X和Y之间的偏相关系数。如果在Z的条件下X与Y独立（<span
+class="math inline">\(X\perp \!\!\! \perp Y | Z\)</span>）,则<span
+class="math inline">\(\rho(X,Y|\mathbf{Z}) =
+0\)</span>，但反之不成立。</p>
+<h4 id="条件独立conditional-independence">条件独立（Conditional
+Independence）</h4>
+<p><span class="math inline">\(P(A₁A₂|A)=P(A₁|A)·P(A₂|A)\)</span></p>
+<p>当A发生时，A₁发生与否与<a
+target="_blank" rel="noopener" href="https://www.zhihu.com/search?q=A₂&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A129140032%7D">A₂</a>发生与否是无关的.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/22/10-708-class2/" rel="prev" title="10_708_class2">
+      <i class="fa fa-chevron-left"></i> 10_708_class2
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cmu-10-708%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">CMU 10-708《概率图模型》</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pearson%E7%9A%AE%E5%B0%94%E9%80%8A%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">Pearson(皮尔逊)相关系数：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kl%E6%95%A3%E5%BA%A6"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">KL散度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#js%E6%95%A3%E5%BA%A6jensen-shannon-divergence"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">JS散度(Jensen-Shannon
+divergence)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%92%E4%BF%A1%E6%81%AF%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%A2%9E%E7%9B%8A"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">互信息与信息增益</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%8C%E5%B0%94%E4%BC%AF%E7%89%B9-%E6%96%BD%E5%AF%86%E7%89%B9%E7%8B%AC%E7%AB%8B%E6%80%A7%E5%87%86%E5%88%99hilbert-schmidt-independence-criterion-hsic"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">希尔伯特-施密特独立性准则（Hilbert-Schmidt
+Independence Criterion-HSIC）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hsic%E5%BD%A2%E5%BC%8F"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">HSIC形式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%8F%E7%9B%B8%E5%85%B3partial-correlation"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">偏相关（Partial Correlation）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E7%8B%AC%E7%AB%8Bconditional-independence"><span class="nav-number">1.0.0.8.</span> <span class="nav-text">条件独立（Conditional
+Independence）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Timako</p>
+  <div class="site-description" itemprop="description">Time heals</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Timako</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
