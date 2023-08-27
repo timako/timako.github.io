@@ -20,32 +20,26 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="这是对VAE（变分编码器）论文的阅读和代码实现记录">
+  <meta name="description" content="class4 精确推理（Exact Inference） 因子图Factor Graph Factor Graph 是概率图的一种，概率图有很多种，最常见的就是Bayesian Network (贝叶斯网络)和Markov Random Fields(马尔可夫随机场)。 在因子图中，所有顶点，要不然就是变量节点不然就是函数节点，边线表示他们之间的函数关系。\(\psi\)函数表示符号，就">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VAE paper reading">
-<meta property="og:url" content="http://example.com/2023/07/11/VAE-paper-reading/index.html">
+<meta property="og:title" content="10_708_class4">
+<meta property="og:url" content="http://example.com/2023/08/27/10-708-class4/index.html">
 <meta property="og:site_name" content="Timako world">
-<meta property="og:description" content="这是对VAE（变分编码器）论文的阅读和代码实现记录">
+<meta property="og:description" content="class4 精确推理（Exact Inference） 因子图Factor Graph Factor Graph 是概率图的一种，概率图有很多种，最常见的就是Bayesian Network (贝叶斯网络)和Markov Random Fields(马尔可夫随机场)。 在因子图中，所有顶点，要不然就是变量节点不然就是函数节点，边线表示他们之间的函数关系。\(\psi\)函数表示符号，就">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/pic/vae/1.png">
-<meta property="og:image" content="http://example.com/pic/vae/2.png">
-<meta property="og:image" content="http://example.com/pic/vae/3.png">
-<meta property="og:image" content="http://example.com/pic/vae/4.png">
-<meta property="og:image" content="http://example.com/pic/vae/5.png">
-<meta property="og:image" content="http://example.com/pic/vae/6.png">
-<meta property="og:image" content="http://example.com/pic/vae/7.png">
-<meta property="og:image" content="http://example.com/pic/vae/8.png">
-<meta property="og:image" content="http://example.com/pic/vae/9.png">
-<meta property="og:image" content="http://example.com/pic/vae/10.png">
-<meta property="og:image" content="http://example.com/pic/vae/11.png">
-<meta property="og:image" content="http://example.com/pic/vae/12.png">
-<meta property="article:published_time" content="2023-07-11T08:14:52.000Z">
-<meta property="article:modified_time" content="2023-07-19T11:13:04.627Z">
+<meta property="og:image" content="http://example.com/pic/10_708/8.png">
+<meta property="og:image" content="http://example.com/pic/10_708/6.png">
+<meta property="og:image" content="http://example.com/pic/10_708/7.png">
+<meta property="og:image" content="http://example.com/pic/10_708/9.png">
+<meta property="og:image" content="http://example.com/pic/10_708/10.png">
+<meta property="og:image" content="http://example.com/pic/10_708/11.png">
+<meta property="article:published_time" content="2023-08-27T14:34:42.000Z">
+<meta property="article:modified_time" content="2023-08-27T04:19:58.311Z">
 <meta property="article:author" content="Timako">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/pic/vae/1.png">
+<meta name="twitter:image" content="http://example.com/pic/10_708/8.png">
 
-<link rel="canonical" href="http://example.com/2023/07/11/VAE-paper-reading/">
+<link rel="canonical" href="http://example.com/2023/08/27/10-708-class4/">
 
 
 <script id="page-configurations">
@@ -58,7 +52,7 @@
   };
 </script>
 
-  <title>VAE paper reading | Timako world</title>
+  <title>10_708_class4 | Timako world</title>
   
 
 
@@ -177,7 +171,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/11/VAE-paper-reading/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/27/10-708-class4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -190,7 +184,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          VAE paper reading
+          10_708_class4
         </h1>
 
         <div class="post-meta">
@@ -199,23 +193,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-07-11 16:14:52" itemprop="dateCreated datePublished" datetime="2023-07-11T16:14:52+08:00">2023-07-11</time>
+              <time title="创建时间：2023-08-27 22:34:42 / 修改时间：12:19:58" itemprop="dateCreated datePublished" datetime="2023-08-27T22:34:42+08:00">2023-08-27</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:04" itemprop="dateModified" datetime="2023-07-19T19:13:04+08:00">2023-07-19</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
+                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
                 </span>
             </span>
 
@@ -237,82 +225,118 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这是对VAE（变分编码器）论文的阅读和代码实现记录 <span id="more"></span> ##
-论文阅读</p>
-<h3 id="intuition">Intuition</h3>
-<p><img src="/pic/vae/1.png" /></p>
-<p>其中，x是输入变量，比如图像等，他是一个很高维度的随机变量；z是不可观测的（latent），一般维度比x低很多，用来描述“更本质的”关于x的信息。这里，我们假设z是满足一个分布<span
-class="math inline">\(\mathcal{p}_\theta(z)\)</span>，而<span
-class="math inline">\(\mathcal{p}_\theta(x|z)\)</span>表示从z采样一个x。<span
-class="math inline">\(\theta\)</span>是一个参数，假设z满足一定的分布，所以也有从<span
-class="math inline">\(\theta\)</span>到z的箭头。后面的星号<span
-class="math inline">\(\theta\)</span>*表示ground truth，之后提及<span
-class="math inline">\(\theta\)</span>都是指decoder里面的参数。x加上encoder里面的参数<span
-class="math inline">\(\phi\)</span>就可以尝试推出z来。</p>
-<p>举个例子：</p>
-<p><img src="/pic/vae/2.png" /></p>
-<p>左图是一个图像，图像里面有各种各样颜色，形状，大小不一样的图形，而右图是一些参数，通过更改这些参数，我们能够做到对图像的更改。</p>
-<p>对于贝叶斯公式<span
-class="math inline">\(p_{\boldsymbol{\theta}}(\mathbf{z}|\mathbf{x})=p_{\boldsymbol{\theta}}(\mathbf{x}|\mathbf{z})p_{\boldsymbol{\theta}}(\mathbf{z})/p_{\boldsymbol{\theta}}(\mathbf{x})\)</span>，我们至少需要知道右边的两个参数（剩下的先验概率可以估计着用）。然而，z的分布我们是不知道的，<span
-class="math inline">\(\mathcal{p}_\theta(x)\)</span>是一个积分，然而事实上x和z都是很高维度的变量，积分实际上是无法进行的（非常高层的积分）。因此，从x推导到z，用纯计算的方法是很难进行的。VAE的motivation就是如此，他希望用一个神经网络来近似这一概率分布，在参数<span
-class="math inline">\(\phi\)</span>的帮助下，能让q尽量接近p。而为了衡量这两个分布的相似程度，我们就自然地想到了KL-divergence。</p>
-<p><img src="/pic/vae/3.png" /></p>
-<p>该图是KL散度的推导过程。<span
-class="math inline">\(\log(p_\theta(x))\)</span>是一个常数，因为无论x是什么分布，它对于<span
-class="math inline">\(\mathcal{p}_\theta\)</span>都没有什么影响。因为KL散度是非负值，所以只要让<span
-class="math inline">\(L(\theta,\phi;x)\)</span>值足够大，KL就会尽可能的小，两个度量的相似度也因此越高。L被称作variational
-lower bound。</p>
-<p><img src="/pic/vae/4.png" /></p>
-<p>现在我们要做的就是尽可能地提升L，因此L可以作为模型训练时的loss
-function。拆分后，左边一项就是一个期望值，右边一项正好是一个KL散度的表达式。左边期望E的含义是：给定一个latent
-variable
-z，输出x确实是我们输入的x的概率，也就是从z推导出的x和输入x要尽量接近。这一项被称为reconstruction
-loss。第二项KL散度希望我们推得的representation和先验的latent
-representation尽量接近。这一项被称为regularization loss。这个loss
-function实际上可以写成一个期望的形式，而为了估计这种期望的导数，我们将使用蒙特卡罗方法。在下面我们将把中括号里的内容表示为<span
-class="math inline">\(f(z)\)</span>，并假设z和<span
-class="math inline">\(\phi\)</span>没有关系。</p>
-<p><img src="/pic/vae/5.png" /></p>
-<p>该图中，最上面一行公式在对<span
-class="math inline">\(f(z)\)</span>的期望求导，用蒙特卡罗方法采样几个值求平均，最后可以当作期望值。下半张图是对等式推导的说明，注意下面的<span
-class="math inline">\(\theta\)</span>意义等同于上式的<span
-class="math inline">\(\phi\)</span>。根据作者的实验，如果使用这样的estimator，得到的结果具有高方差，更直观地说，会导致训练不稳定。</p>
-<p><img src="/pic/vae/6.png" /></p>
-<p>而在此基础上，作者提出了Generic Stochastic Gradient Variational Bayes
-(SGVB) estimator，并且使用了Reparameterization Trick。在之前的Monte
-Carlo estimator中，我们进行了一个非常强的假设，也就是f(z)和<span
-class="math inline">\(\phi\)</span>无关，但实际上是有关的。在求导中的前一项我们无法处理。为了解决这个问题，作者引入了一个随机变量<span
-class="math inline">\(\epsilon\)</span>，它和其它所有变量均无关系，用它来表示产生z(latent
-parameter)时所有的随机性。在抽样产生z的过程中，所有的随机性都是由<span
-class="math inline">\(\epsilon\)</span>产生的，而<span
-class="math inline">\(\epsilon\)</span>和<span
-class="math inline">\(\phi\)</span>没有任何关系。</p>
-<p><img src="/pic/vae/7.png" /></p>
-<p>从更加数学的角度，作者分析了Reparameterization
-Trick。在左图中，根据<span
-class="math inline">\(\phi\)</span>和x得到分布，然后从分布中抽样一个z。然而，怎么从采样中反向传递梯度，这显然无法做到。然而，如果把随机性移动到epsilon，先前的抽样过程采样就可以进行顺利的反向传播。</p>
-<p><img src="/pic/vae/8.png" /></p>
-<p>我们把z写成<span
-class="math inline">\(\mathbf{z}^{(i,l)}=g_\phi(\mathbf{\epsilon}^{(i,l)},\mathbf{x}^{(i)})\)</span>的形式，然后按照<span
-class="math inline">\(\epsilon^{(l)}\sim
-p(\boldsymbol{\epsilon})\)</span>进行抽样。这样就得到了<span
-class="math inline">\(\widetilde{\mathcal{L}}^A(\boldsymbol{\theta},\boldsymbol{\phi};\mathbf{x}^{(i)})\)</span>，也就是loss的形式，接下来只要两边求导即可。因为期望的distribution已经被替换成了<span
-class="math inline">\(\epsilon\)</span>的distribution，所以跟<span
-class="math inline">\(\phi\)</span>是没有关系的，可以直接求导。</p>
-<p><img src="/pic/vae/9.png" /></p>
-<p><img src="/pic/vae/10.png" /></p>
-<p>对于loss，之前我们写成了KL divergence 和一个期望的和，而KL
-divergence有很多优秀的性质。</p>
-<p><img src="/pic/vae/11.png" /></p>
-<p>随后把KL
-divergence的两项合并起来，得到一个非常简单的loss。另一方面，我们是用最简单的MSE，使得给定z求出的x尽量逼近x，就可以最大化loss。这就是我们最终使用的SGVB</p>
-<p><img src="/pic/vae/12.png" /></p>
-<p>总框架：先输入一个x，经过由参数<span
-class="math inline">\(\phi\)</span>决定的一个encoder，encoder会产生参数<span
-class="math inline">\(\mu\)</span>和<span
-class="math inline">\(\Sigma\)</span>，首先被用来计算KL
-divergence，接着对它抽样产生一个z（此处使用epsilon产生一个随机的项）。得到z之后，作为decoder的输入，此处的decoder是由参数<span
-class="math inline">\(\theta\)</span>来决定的。经过decoder之后，我们重建出了x，并算出输入输出x的MSE，作为LOSS的另一部分。</p>
+        <h1 id="class4-精确推理exact-inference">class4 精确推理（Exact
+Inference）</h1>
+<h3 id="因子图factor-graph">因子图Factor Graph</h3>
+<p>Factor Graph 是概率图的一种，概率图有很多种，最常见的就是Bayesian
+Network (贝叶斯网络)和Markov Random Fields(马尔可夫随机场)。</p>
+<p>在因子图中，所有顶点，要不然就是<strong>变量节点</strong>不然就是<strong>函数节点</strong>，边线表示他们之间的函数关系。<span
+class="math inline">\(\psi\)</span>函数表示符号，就是表示我们模型中x和y的联系函数。因子图和<span
+class="math inline">\(\psi\)</span>函数表示法，在machine
+learning的paper中是比较常用的。</p>
+<span id="more"></span>
+<p><strong>定义</strong>：一个因子图表示了一个多元函数的因式分解（the
+factorization of a function of several variables.
+）我们在这里使用Forney-style的因子图作为示例：</p>
+<p><strong>例1</strong>. <span class="math display">\[
+\begin{aligned}f(x_1,x_2,x_3,x_4,x_5)&amp;=f_\text{A}(x_1,x_2,x_3)\cdot
+f_\text{B}(x_3,x_4,x_5)\cdot f_\text{C}(x_4).\end{aligned}
+\]</span> <img src="/pic/10_708/8.png" /></p>
+<p>创建规则：</p>
+<p>• 对任意因子都有一个节点</p>
+<p>• 对任意变量都有一条边或者半边（half-edge）</p>
+<p>• 节点g被连接到边x，当且仅当变量x出现在g的因式分解里（variable x
+appears in factor g）</p>
+<p>在概率图中，求某个变量的边缘分布是常见的问题。这问题有很多求解方法，其中之一就是可以把Bayesian
+Network和Markov Random Fields 转换成Facor
+Graph，然后用sum-product算法求解。基于Factor
+Graph可以用sum-product算法可以高效的求各个变量的边缘分布。</p>
+<p>因子图的生成方式如下图所示，对于有向图模型，我们可以将图模型中所有的联合概率分布转换成对应的因子，同时入度为0的节点(即不受其他点的概率分布的约束)还有自己对应的因子，因为这些节点自己就是一个边缘分布，而在<strong>无向图模型</strong>中，<strong>所有的最大团</strong>可以转换成一个对应的因子。下面的模型是原型的因子图模型。
+[FKLW 1997].</p>
+<p><img src="/pic/10_708/6.png" /></p>
+<p>我们可以将一系列因子表示为<span
+class="math inline">\(\psi_i\)</span>，最终整个图模型的联合概率分布可以被转化成：
+<span class="math display">\[
+p(\boldsymbol{x})=\frac1Z\prod_\alpha\psi_\alpha\left(\boldsymbol{x}_\alpha\right)
+\]</span> <strong>例2</strong>.
+如下图所示，这是一个有向图模型，再转化成因子图之后，原本的联合分布中一定会出现的条件概率分布就可以转化成因子对应的势能函数</p>
+<p><img src="/pic/10_708/7.png" /></p>
+<h4 id="基本问题">基本问题</h4>
+<p><strong>边缘化（Marginalization）</strong>，类似于计算边缘概率分布：
+<span class="math display">\[
+\begin{aligned}\bar{f}_k(x_k)&amp;\stackrel{\Delta}{=}\sum
+f(x_1,\ldots,x_n)\\&amp;x_1,\ldots,x_n\\&amp;\textbf{except
+}x_k\end{aligned}
+\]</span>
+<strong>最大化（Maximization）</strong>：类似于计算最大边缘概率： <span
+class="math display">\[
+\begin{aligned}\bar{f}_k(x_k)&amp;\stackrel{\Delta}{=}\max
+f(x_1,\ldots,x_n)\\&amp;x_1,\ldots,x_n\\&amp;\textbf{except
+}x_k\end{aligned}
+\]</span> 我们标记： <span class="math display">\[
+\begin{aligned}\operatorname{argmax}f(x_1,\ldots,x_n)&amp;=\left(\operatorname{argmax}\hat
+f_1(x_1),\ldots,\operatorname{argmax}\hat f_n(x_n)\right).\end{aligned}
+\]</span> 对于较大的n而言，即使我们的<span
+class="math inline">\(x_1,\ldots,x_n\)</span>都在区间<span
+class="math inline">\([0,1]\)</span>之间，这两个问题也是难以解决的。然而，如果采用因式分解的方法：
+<span class="math display">\[
+\begin{aligned}\bar{f_k}(x_k)&amp;=\left(\sum_{x_1}f_1(x_1)\right)\cdots\left(\sum_{x_{k-1}}f_{k-1}(x_{k-1})\right)f_k(x_k)\cdots\left(\sum_{x_n}f_n(x_n)\right)\end{aligned}
+\]</span> 且 <span class="math display">\[
+\hat{f}_k(x_k)=\left(\max_{x_1}f_1(x_1)\right)\cdots\left(\max_{x_{k-1}}f_{k-1}(x_{k-1})\right)f_k(x_k)\cdots\left(\max_{x_n}f_n(x_n)\right)
+\]</span> 我们将举一个计算边缘变量的例子：</p>
+<p><strong>例3.</strong> 假设我们想要计算： <span
+class="math display">\[
+\begin{aligned}\bar{f}_3(x_3)&amp;\stackrel{\Delta}{=}\max
+f(x_1,\ldots,x_7)\\&amp;x_1,\ldots,x_7\\&amp;\textbf{except
+}x_3\end{aligned}
+\]</span> 并且假设<span
+class="math inline">\(f\)</span>能被因式分解为以下图形式：</p>
+<p><img src="/pic/10_708/9.png" /></p>
+<p>首先，我们使用分配律对连乘进行分配 <span class="math display">\[
+\begin{aligned}
+\bar{f_3}(x_3)&amp; ={ \underbrace {\left(
+\sum_{x_1,x_2}f_1(x_1)f_2(x_2)f_3(x_1,x_2,x_3)
+\right)}_{\overrightarrow{\mu}_{X_3}(x_3)} }\ \\
+&amp;\cdot{ \underbrace {
+\left(\sum_{x_4,x_5}f_4(x_4)f_5(x_3,x_4,x_5)\right)
+{ \underbrace {\left(  \sum_{x_6,x_7}f_6(x_5,x_6,x_7)f_7(x_7) \right)
+}_{\overleftarrow{\mu}_{X_5}(x_5)}} } _{\overleftarrow{\mu}_{X_3}(x_3)}}
+\end{aligned}
+\]</span> 注意到<span
+class="math inline">\(\overrightarrow{\mu}_{X_1}(x_1)\triangleq
+f_1(x_1),\overrightarrow{\mu}_{X_2}(x_2)\triangleq
+f_2(x_2)\)</span>，类似地，我们可以得到： <span class="math display">\[
+\begin{aligned}
+\overleftarrow
+{\mu}_{X_5}(x_5)&amp;=\sum_{x_6,x_7}\overrightarrow{\mu}_{X_7}(x_7)f_6(x_5,x_6,x_7)\\
+\overrightarrow{\mu}_{X_3}(x_3)&amp;=\sum_{x_1,x_2}\overrightarrow{\mu}_{X_1}(x_1)\overrightarrow{\mu}_{X_2}(x_2)f_3(x_1,x_2,x_3)\\
+\overleftarrow{\mu}_{X_3}(x_3)&amp;=\sum_{x_4,x_5}\overrightarrow{\mu}_{X_4}(x_4)\overleftarrow{\mu}_{X_5}(x_5)f_5(x_3,x_4,x_5)
+\end{aligned}
+\]</span></p>
+<h4 id="sum-product-algorithm">Sum-Product Algorithm</h4>
+<p><img src="/pic/10_708/10.png" /></p>
+<p>Sum-product message computation rule: <span class="math display">\[
+\begin{aligned}\overrightarrow{\mu}_X(x)=\sum_{y_1,...,y_n}g(x,y_1,\ldots,y_n)\overrightarrow{\mu}_{Y_1}(y_1)\cdots\overrightarrow{\mu}_{Y_n}(y_n)\end{aligned}
+\]</span> Sum-product theorem:</p>
+<p>如果因子图中的某个函数<span
+class="math inline">\(f\)</span>无环，那么： <span
+class="math display">\[
+\bar{f}_X(x)=\left.\overrightarrow{\mu}_X(x)\right.\overleftarrow{\mu}_X(x).
+\]</span>
+理解：将每个变量对应的Factor进行组合，然后一边计算一边化简表达式的过程</p>
+<h4 id="应用">应用</h4>
+<p><strong>例4</strong>. 在以下的隐马尔可夫模型中：</p>
+<p><img src="/pic/10_708/11.png" /></p>
+<p>对于当前状态的估计： <span class="math display">\[
+\begin{aligned}
+\begin{aligned}p(x_n|y_1,\ldots,y_n)\end{aligned}&amp;
+\begin{aligned}=\frac{p(x_n,y_1,\ldots,y_n)}{p(y_1,\ldots,y_n)}\end{aligned}  \\
+&amp;\propto p(x_n,y_1,\ldots,y_n) \\
+&amp;\begin{aligned}=\sum_{x_0}\ldots\sum_{x_{n-1}}p(x_0,x_1,\ldots,x_n,y_1,y_2,\ldots,y_n)\end{aligned}
+\\
+&amp;=\overrightarrow{\mu}_{X_n}(x_n).
+\end{aligned}
+\]</span></p>
 
     </div>
 
@@ -327,11 +351,11 @@ class="math inline">\(\theta\)</span>来决定的。经过decoder之后，我们
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2023/07/11/HRRVC-paper-reading/" rel="next" title="HRRVC paper reading">
-      HRRVC paper reading <i class="fa fa-chevron-right"></i>
+    <a href="/2023/08/25/10-708-class3/" rel="prev" title="10_708_class3">
+      <i class="fa fa-chevron-left"></i> 10_708_class3
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -390,7 +414,8 @@ class="math inline">\(\theta\)</span>来决定的。经过decoder之后，我们
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#intuition"><span class="nav-number">1.</span> <span class="nav-text">Intuition</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#class4-%E7%B2%BE%E7%A1%AE%E6%8E%A8%E7%90%86exact-inference"><span class="nav-number">1.</span> <span class="nav-text">class4 精确推理（Exact
+Inference）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E5%AD%90%E5%9B%BEfactor-graph"><span class="nav-number">1.0.1.</span> <span class="nav-text">因子图Factor Graph</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">基本问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sum-product-algorithm"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">Sum-Product Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">应用</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
