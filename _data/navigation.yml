@@ -4,5 +4,11 @@ main:
   - title: "About"
     url: /
 
+  - title: "Profile"
+    url: /#profile
+
   - title: "Research"
     url: /#research
+
+  - title: "Education"
+    url: /#education
