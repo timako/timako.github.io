@@ -1,1340 +1,168 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="Time heals">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Timako world">
-<meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Timako world">
-<meta property="og:description" content="Time heals">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="Timako">
-<meta name="twitter:card" content="summary">
-
-<link rel="canonical" href="http://example.com/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : true,
-    isPost : false,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>Timako world</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --></head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Timako world</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Academic homepage of Timako, Zhejiang University. Research interests include computer graphics and computer vision.">
+    <meta name="author" content="Timako">
+    <meta property="og:title" content="Timako">
+    <meta property="og:description" content="Academic homepage of Timako at Zhejiang University.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://timako.github.io/">
+    <meta property="og:image" content="https://timako.github.io/images/profile.png">
+    <title>Timako | Academic Homepage</title>
+    <link rel="icon" type="image/png" href="images/profile.png">
+    <link rel="stylesheet" href="assets/site.css">
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Timako",
+        "url": "https://timako.github.io/",
+        "image": "https://timako.github.io/images/profile.png",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Zhejiang University"
+        },
+        "sameAs": [
+          "https://github.com/timako"
+        ],
+        "knowsAbout": [
+          "Computer Graphics",
+          "Computer Vision",
+          "Real-Time Rendering",
+          "Physically Based Rendering",
+          "3D Reconstruction"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Timako home">Timako</a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#work">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </header>
 
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content index posts-expand">
-            
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/27/10-708-class4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/27/10-708-class4/" class="post-title-link" itemprop="url">10_708_class4</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2023-08-27 22:34:42 / 修改时间：12:19:58" itemprop="dateCreated datePublished" datetime="2023-08-27T22:34:42+08:00">2023-08-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="class4-精确推理exact-inference">class4 精确推理（Exact
-Inference）</h1>
-<h3 id="因子图factor-graph">因子图Factor Graph</h3>
-<p>Factor Graph 是概率图的一种，概率图有很多种，最常见的就是Bayesian
-Network (贝叶斯网络)和Markov Random Fields(马尔可夫随机场)。</p>
-<p>在因子图中，所有顶点，要不然就是<strong>变量节点</strong>不然就是<strong>函数节点</strong>，边线表示他们之间的函数关系。<span
-class="math inline">\(\psi\)</span>函数表示符号，就是表示我们模型中x和y的联系函数。因子图和<span
-class="math inline">\(\psi\)</span>函数表示法，在machine
-learning的paper中是比较常用的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/27/10-708-class4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/25/10-708-class3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/25/10-708-class3/" class="post-title-link" itemprop="url">10_708_class3</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-25 22:34:42" itemprop="dateCreated datePublished" datetime="2023-08-25T22:34:42+08:00">2023-08-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-27 11:48:10" itemprop="dateModified" datetime="2023-08-27T11:48:10+08:00">2023-08-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="class3-有向图模型">class3 有向图模型</h1>
-<h4 id="专家系统expert-system-es">专家系统（Expert System, ES）</h4>
-<p>是在某一特定领域中，能够像人类专家一样解决复杂问题的计算机软件系统。它能够有效地运用专家多年积累的经验和专业知识，通过模拟专家的思维过程，解决需要专家才能解决的问题。</p>
-<h4
-id="隐马尔可夫模型hiddenmarkovmodelvmm">隐马尔可夫模型（HiddenMarkovmodel，VMM）</h4>
-<p>在马尔可夫模型中，每个状态代表了一个可观察的事件，所以，马尔可夫模型有时又称作可视马尔可夫模型（visibleMarkovmodel，VMM），这在某种程度上限制了模型的适应性。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/25/10-708-class3/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/23/10-708-class2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/23/10-708-class2/" class="post-title-link" itemprop="url">10_708_class2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-23 22:34:42" itemprop="dateCreated datePublished" datetime="2023-08-23T22:34:42+08:00">2023-08-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-27 11:48:02" itemprop="dateModified" datetime="2023-08-27T11:48:02+08:00">2023-08-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="class2-无向图模型">class2 无向图模型</h1>
-<h4 id="栅格模型grid-model">栅格模型(grid model)</h4>
-<p>用一个网格来划分图像，其中每一个像素或者每一簇像素作为一个atom。或者在物理学的概念中，每一个原子作为一个node。其他的例子比如：社交网络，蛋白质相互作用模型，信息检索，</p>
-<h4 id="无向图模型">无向图模型</h4>
-<p>无向图G中任何两个节点均有边连接的节点子集称为<strong>团(Clique)</strong>。若C是无向图G的一个团，并且不能再加进去任何一个G的节点使其成为一个更大的团，则称C为<strong>最大团(Maximual
-clique)</strong>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/23/10-708-class2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/22/10-708-class1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/22/10-708-class1/" class="post-title-link" itemprop="url">10_708_class1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-22 22:34:42" itemprop="dateCreated datePublished" datetime="2023-08-22T22:34:42+08:00">2023-08-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-08-25 12:18:19" itemprop="dateModified" datetime="2023-08-25T12:18:19+08:00">2023-08-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/10-708-%E3%80%8A%E6%A6%82%E7%8E%87%E5%9B%BE%E6%A8%A1%E5%9E%8B%E3%80%8B/" itemprop="url" rel="index"><span itemprop="name">10-708 《概率图模型》</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="cmu-10-708概率图模型">CMU 10-708《概率图模型》</h1>
-<p>课程目标：把大量的模型和算法统一到一棵或几棵一致的结构树中
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/08/22/10-708-class1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/" class="post-title-link" itemprop="url">A survey on hair modeling: Styling, simulation, and rendering</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-15 12:30:58" itemprop="dateCreated datePublished" datetime="2023-07-15T12:30:58+08:00">2023-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:12" itemprop="dateModified" datetime="2023-07-19T19:13:12+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇文章是关于头发建模的survey，在2007年发布的。主要阅读关于建模相关的部分（第二章）</p>
-<h3 id="introduction">Introduction</h3>
-<p>真实地表现头发的结构、运动和视觉外观仍然是一个open challenge。</p>
-<p><strong>Background</strong>: 人的头部通常由大量头发组成，其中有超过
-100,000
-根发丝。然而，每根发丝的直径都非常小。考虑到这种二元性，研究人员研究了头发是否应该被视为整体或单独的相互作用的发丝。目前，还没有一种方法被接受为头发造型的行业标准。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/15/A-survey-on-hair-modeling-Styling-simulation-and-rendering/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/14/AutoHair-paper-reading/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/14/AutoHair-paper-reading/" class="post-title-link" itemprop="url">AutoHair paper reading</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-14 12:44:43" itemprop="dateCreated datePublished" datetime="2023-07-14T12:44:43+08:00">2023-07-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:14" itemprop="dateModified" datetime="2023-07-19T19:13:14+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇文章是HairGAN的前身，也是周昆老师在研究进展课上提到过的工作。</p>
-<h3 id="概览">概览</h3>
-<p>该文章首次提出了基于单张图片，在无需用户交互输入情况下，快速重建3D头发模型（几何形状）的方法。该方法的核心包括：</p>
-<ul>
-<li>基于深度学习网络的发型解析算法，支持基于单张2D肖像头发图片，输出头发的2D分割掩码图(Mask)，以及生长方向描述。为支持神经网络的训练，构建了手动标注的2D发型图片库，标注信息包括了头发分割掩码图、生长方向图、基于聚类方法得到的头发分类类型；</li>
-<li>3D头发模型库。基于少量3D发型扩展生成大量不同类型的3D头发模型库。数据库包含了3D头发模型、正向(front-view)头发分割图、不同角度的渲染图，以及发型生长方向图等元数据；</li>
-<li>基于数据驱动发型匹配和头发建模方法，支持2D头发图片到3D头发模型的快速搜索匹配，以及基于分割模版和头发生成信息，自动拟合变形得到与2D输入形状一致的3D头发模型。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/14/AutoHair-paper-reading/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/14/HairGAN-paper-reading/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/14/HairGAN-paper-reading/" class="post-title-link" itemprop="url">HairGANs paper reading</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-14 11:59:41" itemprop="dateCreated datePublished" datetime="2023-07-14T11:59:41+08:00">2023-07-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:21" itemprop="dateModified" datetime="2023-07-19T19:13:21+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这篇文章是我在找综述的时候看见友怡老师写的，跟老师给我的毕业论文题目很相近，优先阅读一下</p>
-<h3 id="introduction">Introduction</h3>
-<p>数据驱动的方法存在一些问题。 1.
-首先，头发数据库对大存储的要求限制了其在移动设备等资源受限平台上的应用。
-2.
-其次，建模结果的质量取决于从数量有限的数据库中搜索到的头发样本。最终结果的结构仍然受到最初检索到的样本的限制。
-3.
-此外，贪心搜索过程缓慢且难以平衡局部细节相似性和全局形状相似性之间的选择标准。</p>
-<p>生成对抗网络能够比 CNN
-和自动编码器模型更好地捕获模型分布，因为它们的对抗训练性质倾向于自行学习更通用的距离度量，而不是手动编码[14]。</p>
-<p>论文的工作： 1. 介绍了用于单视图头发建模的 GAN 架构。 2. GAN 将 2D
-方向图转换为 3D 体积场，对发丝的占用和方向信息进行编码； 3.
-建议在生成器网络的设计中加入一个维度扩展层，将一系列 2D 特征转换为单通道
-3D 特征； 4. 通过考虑鉴别器的输出和潜在特征来优化生成器参数。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/14/HairGAN-paper-reading/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/13/GAN-reading-and-implementation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/13/GAN-reading-and-implementation/" class="post-title-link" itemprop="url">GAN reading and implementation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-13 13:25:47" itemprop="dateCreated datePublished" datetime="2023-07-13T13:25:47+08:00">2023-07-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:18" itemprop="dateModified" datetime="2023-07-19T19:13:18+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>生成对抗网络 (Generative Adversarial Network, GAN)
-是一类神经网络，通过轮流训练判别器 (Discriminator) 和生成器
-(Generator)，令其相互对抗，来从复杂概率分布中采样，例如生成图片、文字、语音等。今天我们开始阅读并且实现最简单的GAN网络。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/13/GAN-reading-and-implementation/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/12/Record-Ubuntu22-04-installation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/12/Record-Ubuntu22-04-installation/" class="post-title-link" itemprop="url">Record Ubuntu22.04 installation</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-12 22:49:38" itemprop="dateCreated datePublished" datetime="2023-07-12T22:49:38+08:00">2023-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:30" itemprop="dateModified" datetime="2023-07-19T19:13:30+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/record/" itemprop="url" rel="index"><span itemprop="name">record</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>又重装了一次系统，这次重装的是Ubuntu 22.04
-LTS，记录一下重装系统+系统配置的过程
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/12/Record-Ubuntu22-04-installation/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/11/HRRVC-paper-reading/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Timako">
-      <meta itemprop="description" content="Time heals">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Timako world">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/07/11/HRRVC-paper-reading/" class="post-title-link" itemprop="url">HRRVC paper reading</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-07-11 16:18:08" itemprop="dateCreated datePublished" datetime="2023-07-11T16:18:08+08:00">2023-07-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-19 19:13:24" itemprop="dateModified" datetime="2023-07-19T19:13:24+08:00">2023-07-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/paper-reading/" itemprop="url" rel="index"><span itemprop="name">paper reading</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="符号表">符号表</h2>
-<table>
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 20%" />
-<col style="width: 31%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>符号</th>
-<th>域</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(y\)</span></td>
-<td><span class="math inline">\(\mathbb{R}^3\)</span></td>
-<td>光顶点</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(z\)</span></td>
-<td><span class="math inline">\(\mathbb{R}^3\)</span></td>
-<td>眼顶点</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(P(y,z)\)</span></td>
-<td><span class="math inline">\([0,1]\)</span></td>
-<td>俄罗斯轮盘的概率</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(n\)</span></td>
-<td><span class="math inline">\(S^2\)</span></td>
-<td>表面法线</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\omega\)</span></td>
-<td><span class="math inline">\(S^2\)</span></td>
-<td>散射波瓣上的一个方向</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\omega &#39;\)</span></td>
-<td><span class="math inline">\(S^2\)</span></td>
-<td>入射方向</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\rho(z, \omega,
-\omega&#39;)\)</span></td>
-<td><span class="math inline">\([0,\infty]\)</span></td>
-<td>z处的BRDF</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(q_z(\omega)\)</span></td>
-<td><span class="math inline">\([0,\infty]\)</span></td>
-<td>z处的近似散射波瓣</td>
-</tr>
-<tr class="odd">
-<td>$_i $</td>
-<td><span class="math inline">\([0,1]\)</span></td>
-<td>第i个均匀随机数</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(R(\omega;z,\xi_i)\)</span></td>
-<td><span class="math inline">\([0,\infty]\)</span></td>
-<td>z处的光顶点接受范围</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(D(·)\)</span></td>
-<td><span class="math inline">\([0,\infty]\)</span></td>
-<td>GGX分布</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(K(·)\)</span></td>
-<td><span class="math inline">\([0,1]\)</span></td>
-<td>平方椭球波瓣(SEL)函数</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(\alpha_x, \alpha_y\)</span></td>
-<td><span class="math inline">\([0,1]\)</span></td>
-<td>GGX的粗糙度</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\hat{\alpha}_x,
-\hat{\alpha}_y\)</span></td>
-<td><span class="math inline">\([0,1]\)</span></td>
-<td>GGX的粗糙度</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(M\)</span></td>
-<td><span class="math inline">\(\mathbb{N}\)</span></td>
-<td>光路径数量</td>
-</tr>
-</tbody>
-</table>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/11/HRRVC-paper-reading/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
-
-
+    <main id="top">
+      <section class="hero section">
+        <div class="hero-copy">
+          <p class="eyebrow">Zhejiang University</p>
+          <h1>Timako</h1>
+          <p class="lead">Research in computer graphics and computer vision, with interests in rendering, 3D visual computing, and generative visual modeling.</p>
+          <div class="actions" aria-label="Profile links">
+            <a class="button primary" href="https://github.com/timako">GitHub</a>
+            <a class="button secondary" href="#contact">Contact</a>
           </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
         </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
+        <figure class="portrait">
+          <img src="images/profile.png" alt="Timako GitHub avatar" width="460" height="460">
+        </figure>
+      </section>
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
+      <section id="about" class="section two-column">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2>Academic Profile</h2>
+        </div>
+        <div class="content">
+          <p>I am at Zhejiang University, working around computer graphics and vision. My current interests include real-time rendering, physically based rendering, 3D reconstruction, neural visual representation, and practical graphics systems.</p>
+          <p>This site replaces my old notes-oriented homepage and now serves as a concise research profile for academic communication.</p>
+        </div>
+      </section>
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+      <section id="research" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Research</p>
+          <h2>Interests</h2>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <h3>Rendering Systems</h3>
+            <p>Real-time rendering pipelines, physically based rendering, light transport, and implementation-level graphics engineering.</p>
+          </article>
+          <article class="card">
+            <h3>3D Visual Computing</h3>
+            <p>Geometry processing, reconstruction, representation, and data structures for interactive 3D scenes.</p>
+          </article>
+          <article class="card">
+            <h3>Vision and Generation</h3>
+            <p>Computer vision and generative modeling methods for visual content understanding, synthesis, and editing.</p>
+          </article>
+        </div>
+      </section>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
+      <section id="work" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Work</p>
+          <h2>Selected Public Code</h2>
+        </div>
+        <div class="work-list">
+          <article class="work-item">
+            <div>
+              <h3>Hierachical-Z-Buffer</h3>
+              <p>C++ experiments around hierarchical Z-buffer data structures and visibility-related rendering techniques.</p>
+            </div>
+            <a href="https://github.com/timako/Hierachical-Z-Buffer" aria-label="Open Hierachical-Z-Buffer on GitHub">View</a>
+          </article>
+          <article class="work-item">
+            <div>
+              <h3>HRRVC</h3>
+              <p>Reproduction-oriented implementation work for Hierarchical Russian Roulette for Vertex Connections.</p>
+            </div>
+            <a href="https://github.com/timako/HRRVC" aria-label="Open HRRVC on GitHub">View</a>
+          </article>
+          <article class="work-item">
+            <div>
+              <h3>Rendering Framework Study</h3>
+              <p>Exploration and adaptation of rendering infrastructure for graphics research and prototyping.</p>
+            </div>
+            <a href="https://github.com/timako/Falcor" aria-label="Open Falcor fork on GitHub">View</a>
+          </article>
+        </div>
+      </section>
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Timako</p>
-  <div class="site-description" itemprop="description">Time heals</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">11</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-  </nav>
-</div>
+      <section class="section two-column">
+        <div>
+          <p class="eyebrow">Publications</p>
+          <h2>Manuscripts</h2>
+        </div>
+        <div class="content">
+          <p>Publications and preprints will be listed here when they are public.</p>
+          <!-- Add accepted papers, arXiv links, project pages, and CV links here when available. -->
+        </div>
+      </section>
 
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
+      <section id="contact" class="section contact">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Links</h2>
+        </div>
+        <ul class="contact-list">
+          <li>
+            <span>Affiliation</span>
+            <strong>Zhejiang University</strong>
+          </li>
+          <li>
+            <span>GitHub</span>
+            <a href="https://github.com/timako">github.com/timako</a>
+          </li>
+          <li>
+            <span>Homepage</span>
+            <a href="https://timako.github.io/">timako.github.io</a>
+          </li>
+        </ul>
+        <!-- Add academic email to the contact list when ready. -->
+      </section>
     </main>
 
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Timako</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
+    <footer class="site-footer">
+      <span>Copyright 2026 Timako.</span>
+      <span>Hosted on GitHub Pages.</span>
     </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
-
-  
-
-</body>
+  </body>
 </html>
