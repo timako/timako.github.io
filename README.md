@@ -1,9 +1,7 @@
-# timako.github.io
+# Yidong Wang Academic Homepage
 
-Static academic homepage for Yidong Wang, served at:
+This repository uses the [Academic Pages](https://academicpages.github.io/) Jekyll template for the personal academic homepage at:
 
 https://timako.github.io/
 
-The previous custom domain configuration has been removed. This repository now contains a concise personal research profile instead of the old notes/blog pages.
-
-Update `index.html` when adding a CV, publications, preprints, or project pages.
+The site is configured with Yidong Wang's profile information and currently lists only research interests.

@@ -1,0 +1,8 @@
+# Header navigation for the Academic Pages template.
+
+main:
+  - title: "About"
+    url: /
+
+  - title: "Research"
+    url: /#research
